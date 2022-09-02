@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/pla-professor.ogg-8a96db252dc578cf27d5f0e3c88b4940.oggstr"
+
+[deps]
+
+source_file="res://Music/pla-professor.ogg"
+dest_files=[ "res://.import/pla-professor.ogg-8a96db252dc578cf27d5f0e3c88b4940.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

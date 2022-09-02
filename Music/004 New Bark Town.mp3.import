@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/004 New Bark Town.mp3-4d5efe2e8dadee5628fea0d11f4d73d4.mp3str"
+
+[deps]
+
+source_file="res://Music/004 New Bark Town.mp3"
+dest_files=[ "res://.import/004 New Bark Town.mp3-4d5efe2e8dadee5628fea0d11f4d73d4.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
