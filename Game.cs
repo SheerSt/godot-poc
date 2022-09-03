@@ -4,6 +4,7 @@ using System;
 public class Game : Node2D
 {
 
+	public static Game instance;
 	private ActionStack _actionStack;
 	public ActionStack actionStack
 	{
@@ -15,6 +16,13 @@ public class Game : Node2D
 
 		}
 		set { }
+	}
+
+	public override void _Ready()
+	{
+
+		if (Game.instance == null) Game.instance = this;
+
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

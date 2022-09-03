@@ -22,6 +22,8 @@ public class Player : KinematicBody2D
 	Image bumpMap;
 	int[][] bumps;
 
+	float footprintTimer = 20;
+
 	public override void _Ready()
 	{
 
@@ -200,9 +202,33 @@ public class Player : KinematicBody2D
 			// Offset sprite based on terrain.
 			OffsetSprite();
 
+			footprintTimer += delta;
+			if (footprintTimer > 20)
+            {
+
+				// The camera isn't working for this.
+				footprintTimer = 0;
+				PackedScene footPrints = GD.Load<PackedScene>("res://footprints.tscn");
+				Node node = footPrints.Instance();
+				Sprite sprite = node.GetChild<Sprite>(0);
+				sprite.Position = Position;
+				AnimationPlayer animationPlayer = node.GetChild<AnimationPlayer>(1);
+				animationPlayer.CurrentAnimation = "footprints-fade";
+				animationPlayer.Play();
+				//Game.instance.AddChildBelowNode(this.GetParent(), node);
+
+				TileMap tileMap = (TileMap)Game.instance.FindNode("TileMap");
+
+				Game.instance.AddChildBelowNode(tileMap, node);
+				//Game.instance.MoveChild(node, 0);
+
+			}
+
 		}
 		else
         {
+
+			footprintTimer = 20;
 
 			// Test
 			animationName = "idle-";

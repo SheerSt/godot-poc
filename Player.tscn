@@ -54,6 +54,9 @@ tracks/2/keys = {
 "values": [ false ]
 }
 
+[sub_resource type="Animation" id=30]
+resource_name = "footprints-right"
+
 [sub_resource type="Animation" id=28]
 resource_name = "idle-down"
 length = 6.0
@@ -69,7 +72,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 30, 0, 30, 0, 30, 31, 32, 31, 30 ]
+"values": [ 0, 0, 0, 0, 0, 0, 31, 32, 31, 0 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -99,7 +102,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 6, 24, 6, 24, 6, 24, 25, 26, 25, 24 ]
+"values": [ 6, 6, 6, 6, 6, 6, 25, 26, 25, 6 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -129,7 +132,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 6, 24, 6, 24, 6, 24, 25, 26, 25, 24 ]
+"values": [ 6, 6, 6, 6, 6, 6, 25, 26, 25, 6 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -159,7 +162,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 2, 27, 2, 27, 2, 27, 28, 29, 28, 27 ]
+"values": [ 2, 2, 2, 2, 2, 2, 28, 29, 28, 2 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -189,7 +192,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 2, 27, 2, 27, 2, 27, 28, 29, 28, 27 ]
+"values": [ 2, 2, 2, 2, 2, 2, 28, 29, 28, 2 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -219,7 +222,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 1, 34, 1, 34, 1, 34, 34, 34, 34, 34 ]
+"values": [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -249,7 +252,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 7, 33, 7, 33, 7, 33, 33, 33, 33, 33 ]
+"values": [ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -279,7 +282,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1.003, 2.006, 3.009, 4.012, 4.998, 5.44, 5.491, 5.542, 5.593 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 7, 33, 7, 33, 7, 33, 33, 33, 33, 33 ]
+"values": [ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:flip_h")
@@ -534,9 +537,6 @@ tracks/1/keys = {
 "values": [ true, true ]
 }
 
-[sub_resource type="Animation" id=9]
-resource_name = "test-deleteme"
-
 [sub_resource type="Animation" id=7]
 resource_name = "walk-down"
 length = 0.533334
@@ -787,8 +787,11 @@ script = ExtResource( 4 )
 [node name="ActionStack" parent="." instance=ExtResource( 5 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 16, 8 )
+position = Vector2( 4, 8 )
 current = true
+process_mode = 0
+smoothing_enabled = true
+smoothing_speed = 8.0
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 9 )
@@ -844,6 +847,7 @@ parameters/playback = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="YSort/Player"]
 anims/RESET = SubResource( 3 )
+anims/footprints-right = SubResource( 30 )
 anims/idle-down = SubResource( 28 )
 anims/idle-downleft = SubResource( 22 )
 anims/idle-downright = SubResource( 23 )
@@ -860,7 +864,6 @@ anims/run-right = SubResource( 17 )
 anims/run-up = SubResource( 16 )
 anims/run-upleft = SubResource( 15 )
 anims/run-upright = SubResource( 14 )
-anims/test-deleteme = SubResource( 9 )
 anims/walk-down = SubResource( 7 )
 anims/walk-downleft = SubResource( 10 )
 anims/walk-downright = SubResource( 11 )
@@ -870,15 +873,17 @@ anims/walk-up = SubResource( 6 )
 anims/walk-upleft = SubResource( 12 )
 anims/walk-upright = SubResource( 13 )
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="YSort/Player"]
-position = Vector2( 16, 8 )
-remote_path = NodePath("../../../Camera2D")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/Player"]
 visible = false
 position = Vector2( 0, 5 )
 shape = SubResource( 8 )
 one_way_collision_margin = 0.0
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="YSort/Player"]
+position = Vector2( 4, 8 )
+remote_path = NodePath("../../../Camera2D")
+update_rotation = false
+update_scale = false
 
 [node name="Sounds" type="AudioStreamPlayer" parent="YSort/Player"]
 stream = ExtResource( 10 )
