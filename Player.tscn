@@ -789,7 +789,6 @@ script = ExtResource( 4 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 4, 8 )
 current = true
-smoothing_enabled = true
 smoothing_speed = 8.0
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
@@ -808,21 +807,26 @@ cell_y_sort = true
 format = 1
 tile_data = PoolIntArray( 14, 4, 0, 15, 4, 0, 16, 4, 0, 17, 4, 0, 18, 4, 0, 19, 4, 0, 20, 4, 0, 21, 4, 0, 22, 4, 0, 23, 4, 0, 24, 3, 0, 25, 3, 0, 26, 3, 0, 27, 3, 0, 65550, 4, 0, 65551, 4, 0, 65552, 4, 0, 65553, 4, 0, 65554, 4, 0, 65555, 4, 0, 65556, 4, 0, 65557, 4, 0, 65558, 4, 0, 65559, 4, 0, 65560, 3, 0, 65561, 3, 0, 65562, 3, 0, 65563, 3, 0, 131086, 4, 0, 131087, 4, 0, 131088, 4, 0, 131089, 4, 0, 131090, 4, 0, 131091, 4, 0, 131092, 4, 0, 131093, 4, 0, 131094, 4, 0, 131095, 4, 0, 131096, 3, 0, 131097, 3, 0, 131098, 3, 0, 131099, 3, 0, 196622, 4, 0, 196623, 4, 0, 196624, 4, 0, 196625, 4, 0, 196626, 4, 0, 196627, 4, 0, 196628, 4, 0, 196629, 4, 0, 196630, 4, 0, 196631, 4, 0, 196632, 3, 0, 196633, 3, 0, 196634, 3, 0, 196635, 3, 0, 262158, 4, 0, 262159, 4, 0, 262160, 4, 0, 262161, 4, 0, 262162, 4, 0, 262163, 4, 0, 262164, 4, 0, 262165, 4, 0, 262166, 4, 0, 262167, 4, 0, 262168, 3, 0, 262169, 3, 0, 262170, 3, 0, 262171, 3, 0, 327694, 4, 0, 327695, 4, 0, 327696, 4, 0, 327697, 4, 0, 327698, 4, 0, 327699, 4, 0, 327700, 4, 0, 327701, 4, 0, 327702, 4, 0, 327703, 4, 0, 327704, 3, 0, 327705, 3, 0, 327706, 3, 0, 393230, 3, 0, 393231, 3, 0, 393232, 3, 0, 393233, 3, 0, 393234, 3, 0, 393235, 3, 0, 393236, 3, 0, 393237, 3, 0, 393238, 3, 0, 393239, 3, 0, 393240, 3, 0, 393241, 3, 0, 393242, 3, 0, 393243, 3, 0, 458766, 3, 0, 458767, 3, 0, 458768, 3, 0, 458769, 3, 0, 458770, 3, 0, 458771, 3, 0, 458772, 3, 0, 458773, 3, 0, 458774, 3, 0, 458775, 3, 0, 458776, 3, 0, 458777, 3, 0, 458778, 3, 0, 458779, 3, 0, 524302, 3, 0, 524303, 3, 0, 524304, 3, 0, 524305, 3, 0, 524306, 3, 0, 524307, 3, 0, 524308, 3, 0, 524309, 3, 0, 524310, 3, 0, 524311, 3, 0, 524312, 3, 0, 524313, 3, 0, 524314, 3, 0, 524315, 3, 0, 589838, 3, 0, 589839, 3, 0, 589840, 3, 0, 589841, 3, 0, 589842, 3, 0, 589843, 3, 0, 589844, 3, 0, 589845, 3, 0, 589846, 3, 0, 589847, 3, 0, 589848, 3, 0, 589849, 3, 0, 589850, 3, 0, 589851, 3, 0, 655374, 3, 0, 655375, 3, 0, 655376, 3, 0, 655377, 3, 0, 655378, 3, 0, 655379, 3, 0, 655380, 3, 0, 655381, 3, 0, 655382, 3, 0, 655383, 3, 0, 655384, 3, 0, 655385, 3, 0, 655386, 3, 0, 655387, 3, 0 )
 
-[node name="YSort" type="YSort" parent="."]
+[node name="Shadows" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 8, 8 )
+format = 1
+tile_data = PoolIntArray( -65538, 8, 0 )
 
-[node name="Trees" type="TileMap" parent="YSort"]
+[node name="Trees" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 16, 16 )
 cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
 cell_tile_origin = 2
+cell_y_sort = true
 format = 1
-tile_data = PoolIntArray( -131073, 5, 0, -65535, 7, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, 65534, 6, 0, 196627, 1, 0, 196628, 1, 0, 196629, 1, 0, 196630, 1, 0, 262163, 1, 0, 262164, 1, 0, 262165, 1, 0, 262166, 1, 0, 262168, 2, 0, 262169, 2, 0, 262170, 2, 0, 262171, 2, 0, 327704, 2, 0, 327705, 2, 0, 327706, 2, 0, 327707, 2, 0, 524306, 2, 0, 524307, 2, 0, 524308, 2, 0, 524309, 2, 0, 524310, 2, 0, 524311, 2, 0, 524312, 2, 0 )
+tile_data = PoolIntArray( -458754, 10, 0, -65543, 1, 0, -65542, 1, 0, -65541, 1, 0, -1, 5, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, 65534, 6, 0, 1, 7, 0, 196627, 1, 0, 196628, 1, 0, 196629, 1, 0, 196630, 1, 0, 262163, 1, 0, 262164, 1, 0, 262165, 1, 0, 262166, 1, 0, 262168, 2, 0, 262169, 2, 0, 262170, 2, 0, 262171, 2, 0, 393214, 1, 0, 327680, 9, 0, 327704, 2, 0, 327705, 2, 0, 327706, 2, 0, 327707, 2, 0, 524279, 1, 0, 524280, 1, 0, 524281, 1, 0, 589814, 1, 0, 589815, 1, 0, 524306, 2, 0, 524307, 2, 0, 524308, 2, 0, 524309, 2, 0, 524310, 2, 0, 524311, 2, 0, 524312, 2, 0 )
 script = ExtResource( 7 )
 
-[node name="Player" type="KinematicBody2D" parent="YSort"]
+[node name="Player" type="KinematicBody2D" parent="Trees"]
 script = ExtResource( 2 )
 
-[node name="Music" type="AudioStreamPlayer2D" parent="YSort/Player"]
+[node name="Music" type="AudioStreamPlayer2D" parent="Trees/Player"]
 stream = ExtResource( 8 )
 volume_db = -8.0
 autoplay = true
@@ -832,19 +836,19 @@ __meta__ = {
 "_editor_description_": "This has to be parented to the Player in order to prevent the 'panning' effect."
 }
 
-[node name="Sprite" type="Sprite" parent="YSort/Player"]
+[node name="Sprite" type="Sprite" parent="Trees/Player"]
 position = Vector2( 0, 4 )
 texture = ExtResource( 1 )
 flip_h = true
 hframes = 6
 vframes = 8
 
-[node name="AnimationTree" type="AnimationTree" parent="YSort/Player"]
+[node name="AnimationTree" type="AnimationTree" parent="Trees/Player"]
 tree_root = SubResource( 1 )
 anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 2 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="YSort/Player"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Trees/Player"]
 anims/RESET = SubResource( 3 )
 anims/footprints-right = SubResource( 30 )
 anims/idle-down = SubResource( 28 )
@@ -872,18 +876,18 @@ anims/walk-up = SubResource( 6 )
 anims/walk-upleft = SubResource( 12 )
 anims/walk-upright = SubResource( 13 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/Player"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trees/Player"]
 visible = false
 position = Vector2( 0, 5 )
 shape = SubResource( 8 )
 one_way_collision_margin = 0.0
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="YSort/Player"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Trees/Player"]
 position = Vector2( 4, 8 )
 remote_path = NodePath("../../../Camera2D")
 update_rotation = false
 update_scale = false
 
-[node name="Sounds" type="AudioStreamPlayer" parent="YSort/Player"]
+[node name="Sounds" type="AudioStreamPlayer" parent="Trees/Player"]
 stream = ExtResource( 10 )
 volume_db = -20.0

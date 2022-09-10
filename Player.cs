@@ -22,7 +22,7 @@ public class Player : KinematicBody2D
 	Image bumpMap;
 	int[][] bumps;
 
-	float footprintTimer = 20;
+	float footprintTimer = 30;
 
 	public override void _Ready()
 	{
@@ -85,19 +85,21 @@ public class Player : KinematicBody2D
     /**
 	 * Offset sprite based on terrain.
 	 */
-    public void OffsetSprite()
+    public int OffsetSprite()
     {
 
 		Vector2 newPos = new Vector2(Position.x, Position.y) - background.Position;
 		int xPos = (int)newPos.x;
 		int yPos = (int)newPos.y;
+		int offsetY = 0;
 		if (0 < xPos && xPos < bumps.Length && 0 < yPos && yPos < bumps[xPos].Length)
 		{
 
-			int offsetY = bumps[xPos][yPos];
+			offsetY = bumps[xPos][yPos];
 			this.sprite.Position = new Vector2(0, 4 - offsetY);
 
 		}
+		return offsetY;
 
 	}
 
@@ -142,8 +144,7 @@ public class Player : KinematicBody2D
 			direction.x -= 1;
 		}
 
-
-		direction = direction.Normalized();
+		Vector2 directionNor = direction.Normalized();
 
 		if (direction != Vector2.Zero)
 		{
@@ -167,7 +168,7 @@ public class Player : KinematicBody2D
 
 			}
 
-			Vector2 moveAmount = MoveAndSlide(direction * speed * 65);
+			Vector2 moveAmount = MoveAndSlide(directionNor * speed * 65);
 
 			KinematicCollision2D collision = GetLastSlideCollision();
             if (collision != null && !audioPlayer.Playing)
@@ -200,35 +201,80 @@ public class Player : KinematicBody2D
 			}
 
 			// Offset sprite based on terrain.
-			OffsetSprite();
+			int yOffset = OffsetSprite();
 
-			footprintTimer += delta;
-			if (footprintTimer > 20)
+			footprintTimer += delta * speed;
+			if (footprintTimer > .3f)
             {
 
-				// The camera isn't working for this.
 				footprintTimer = 0;
 				PackedScene footPrints = GD.Load<PackedScene>("res://footprints.tscn");
 				Node node = footPrints.Instance();
 				Sprite sprite = node.GetChild<Sprite>(0);
-				sprite.Position = Position;
+				sprite.Position = Position.Floor() + new Vector2(0, 8 - yOffset);
+				yOffset += 2;
+				float a = ((float)yOffset / 12f);
+				sprite.Modulate = new Color(1f, 1f, 1f, a);
+
+				if (direction == new Vector2(1, 0))
+				{
+					sprite.Frame = 0;
+				}
+				else if (direction == new Vector2(-1, 0))
+				{
+					sprite.Frame = 0;
+					sprite.FlipH = true;
+				}
+				else if (direction == new Vector2(0, 1))
+				{
+					sprite.Frame = 1;
+				}
+				else if (direction == new Vector2(0, -1))
+				{
+					sprite.Frame = 1;
+					sprite.FlipV = true;
+				}
+				else if (direction == new Vector2(1, -1))
+				{
+					sprite.Frame = 2;
+				}
+				else if (direction == new Vector2(-1, -1))
+				{
+					sprite.Frame = 2;
+					sprite.FlipH = true;
+				}
+				else if (direction == new Vector2(1, 1))
+				{
+					sprite.Frame = 3;
+				}
+				else if (direction == new Vector2(-1, 1))
+				{
+					sprite.Frame = 3;
+					sprite.FlipH = true;
+				}
+
 				AnimationPlayer animationPlayer = node.GetChild<AnimationPlayer>(1);
 				animationPlayer.CurrentAnimation = "footprints-fade";
 				animationPlayer.Play();
-				//Game.instance.AddChildBelowNode(this.GetParent(), node);
 
 				TileMap tileMap = (TileMap)Game.instance.FindNode("TileMap");
 
 				Game.instance.AddChildBelowNode(tileMap, node);
+				//Game.instance.AddChildBelowNode(this.GetParent(), node);
 				//Game.instance.MoveChild(node, 0);
 
 			}
 
 		}
 		else
-        {
+		{
 
-			footprintTimer = 20;
+			// Doesn't work.
+			// Round sprite position to nearest pixel (prevents camera weirdness).
+			//Vector2 offset = (Position - Position.Floor());
+			//sprite.Position= new Vector2(-offset.x, -offset.y + 4);
+
+			footprintTimer = 30;
 
 			// Test
 			animationName = "idle-";
@@ -240,6 +286,7 @@ public class Player : KinematicBody2D
 			//animationPlayer.Stop(true);
 
 		}
+
 
 	}
 
