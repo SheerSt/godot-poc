@@ -1,10 +1,9 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://red1.png" type="Texture" id=1]
 [ext_resource path="res://Player.cs" type="Script" id=2]
 [ext_resource path="res://tiles/tileset1.tres" type="TileSet" id=3]
 [ext_resource path="res://Game.cs" type="Script" id=4]
-[ext_resource path="res://ActionStack.tscn" type="PackedScene" id=5]
 [ext_resource path="res://new-bark-town2.png" type="Texture" id=6]
 [ext_resource path="res://Trees.cs" type="Script" id=7]
 [ext_resource path="res://Music/pla-professor.ogg" type="AudioStream" id=8]
@@ -784,8 +783,6 @@ extents = Vector2( 7, 6 )
 position = Vector2( 1, 0 )
 script = ExtResource( 4 )
 
-[node name="ActionStack" parent="." instance=ExtResource( 5 )]
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 4, 8 )
 current = true
@@ -820,7 +817,7 @@ cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
 cell_tile_origin = 2
 cell_y_sort = true
 format = 1
-tile_data = PoolIntArray( -458754, 10, 0, -65543, 1, 0, -65542, 1, 0, -65541, 1, 0, -1, 5, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, 65534, 6, 0, 1, 7, 0, 196627, 1, 0, 196628, 1, 0, 196629, 1, 0, 196630, 1, 0, 262163, 1, 0, 262164, 1, 0, 262165, 1, 0, 262166, 1, 0, 262168, 2, 0, 262169, 2, 0, 262170, 2, 0, 262171, 2, 0, 393214, 1, 0, 327680, 9, 0, 327704, 2, 0, 327705, 2, 0, 327706, 2, 0, 327707, 2, 0, 524279, 1, 0, 524280, 1, 0, 524281, 1, 0, 589814, 1, 0, 589815, 1, 0, 524306, 2, 0, 524307, 2, 0, 524308, 2, 0, 524309, 2, 0, 524310, 2, 0, 524311, 2, 0, 524312, 2, 0 )
+tile_data = PoolIntArray( -196616, 10, 0, -6, 7, 0, -1, 5, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, 65534, 6, 0, 1, 7, 0, 196627, 1, 0, 196628, 1, 0, 196629, 1, 0, 196630, 1, 0, 262163, 1, 0, 262164, 1, 0, 262165, 1, 0, 262166, 1, 0, 262168, 2, 0, 262169, 2, 0, 262170, 2, 0, 262171, 2, 0, 393214, 1, 0, 327680, 9, 0, 327704, 2, 0, 327705, 2, 0, 327706, 2, 0, 327707, 2, 0, 524279, 1, 0, 524280, 1, 0, 524281, 1, 0, 589814, 1, 0, 589815, 1, 0, 524306, 2, 0, 524307, 2, 0, 524308, 2, 0, 524309, 2, 0, 524310, 2, 0, 524311, 2, 0, 524312, 2, 0 )
 script = ExtResource( 7 )
 
 [node name="Player" type="KinematicBody2D" parent="Trees"]

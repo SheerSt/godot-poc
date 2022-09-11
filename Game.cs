@@ -5,18 +5,6 @@ public class Game : Node2D
 {
 
 	public static Game instance;
-	private ActionStack _actionStack;
-	public ActionStack actionStack
-	{
-		get
-		{
-
-			if (_actionStack == null) _actionStack = GetNode<ActionStack>("/root/Game/ActionStack");
-			return _actionStack;
-
-		}
-		set { }
-	}
 
 	public override void _Ready()
 	{
@@ -31,33 +19,10 @@ public class Game : Node2D
 
 		if (Input.IsKeyPressed((int)KeyList.P)) {
 
-			actionStack.PrintTreePretty();
+			//actionStack.PrintTreePretty();
 
 		}
 
-	}
-
-
-	/**
-	* TODO: remove. Idk why this would be needed.
-	*/
-	public void insertAction(string actionName)
-	{
-
-		PackedScene packedScene = ResourceLoader.Load<PackedScene>("res://Actions/Player/" + actionName + ".tscn");
-		Action action = (Action)packedScene.Instance();
-
-		Node2D layer = actionStack.GetNode<Node2D>(action.layer);
-		layer.AddChild(action);
-
-	}
-	
-	public void insertAction(Action action)
-	{
-		
-		Node2D layer = actionStack.GetNode<Node2D>(action.layer);
-		layer.AddChild(action);
-		
 	}
 
 	/**

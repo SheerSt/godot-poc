@@ -133,13 +133,11 @@ public class Player : KinematicBody2D
 		}
 		if (Input.IsKeyPressed((int)Godot.KeyList.Right))
 		{
-			//sprite.FlipH = false;
 			directionName += "right";
 			direction.x += 1;
 		}
 		else if (Input.IsKeyPressed((int)Godot.KeyList.Left))
 		{
-			//sprite.FlipH = false;
 			directionName += "left";
 			direction.x -= 1;
 		}
