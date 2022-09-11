@@ -35,7 +35,7 @@ public class Player : KinematicBody2D
 		sprite = (Sprite)FindNode("Sprite");
 		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
 		audioPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/AudioStreamPlayer2D");
-        //collisionShape2D = (CollisionShape2D)FindNode("CollisionShape2D");
+        collisionShape2D = (CollisionShape2D)FindNode("CollisionShape2D");
 
 		// TODO: move somewhere
 		background = GetNode<Sprite>("/root/Game/Background");
@@ -97,6 +97,7 @@ public class Player : KinematicBody2D
 
 			offsetY = bumps[xPos][yPos];
 			this.sprite.Position = new Vector2(0, 4 - offsetY);
+			this.collisionShape2D.Position = new Vector2(0, 10 - offsetY); ;
 
 		}
 		return offsetY;
