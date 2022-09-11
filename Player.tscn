@@ -810,10 +810,11 @@ cell_size = Vector2( 8, 8 )
 format = 1
 tile_data = PoolIntArray( -65538, 8, 0 )
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="TestPolygon2D" type="Polygon2D" parent="."]
+visible = false
 color = Color( 0, 0, 0, 0.52549 )
 texture = ExtResource( 1 )
-polygon = PoolVector2Array( 20, 30, 73, 30, 82, 19, 11, 19 )
+polygon = PoolVector2Array( -23.5028, 7.9661, 29.4972, 7.9661, 38.4972, -3.0339, -32.5028, -3.0339 )
 uv = PoolVector2Array( 18, 32, 80, 32, 80, 16, 18, 16 )
 
 [node name="Trees" type="TileMap" parent="."]

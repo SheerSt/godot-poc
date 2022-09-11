@@ -18,26 +18,49 @@ public class Trees : TileMap
 		{
 
 			// Make a new Sprite that copies the tile texture
-			int index = GetCellv(position);
-			Texture texture = this.TileSet.TileGetTexture(index);
+			int tileId = GetCellv(position);
+			Texture texture = this.TileSet.TileGetTexture(tileId);
+
+			/* Sprite method
 			Sprite sprite = new Sprite();
 			sprite.Texture = texture;
 			sprite.Position = MapToWorld(position);
 			sprite.RegionEnabled = true;
 			sprite.RegionRect = this.TileSet.TileGetRegion(index);
 
-			//GD.Print(sprite.RegionRect);
-
 			// Color sprite to be black, with slight transparency.
-			//sprite.Modulate = new Color(0f, 0f, 0f, 1f);
+			sprite.Modulate = new Color(0f, 0f, 0f, 1f);
 
 			// Rotate 125 degrees, and squash it.
 			//sprite.Rotation = Mathf.Deg2Rad(180);
 			sprite.Scale = new Vector2(1f, 1f);
 			sprite.FlipV = true;
+			*/
+
+			//GD.Print(sprite.RegionRect);
+
+			Rect2 regionRect = this.TileSet.TileGetRegion(tileId);
+			Polygon2D polygon2D = new Polygon2D();
+			polygon2D.Position = MapToWorld(position);
+			polygon2D.Texture = texture;
+			Vector2[] uv = new Vector2[4];
+			uv[0] = regionRect.Position;
+			uv[1] = new Vector2(regionRect.End.x, regionRect.Position.y);
+			uv[2] = regionRect.End;
+			uv[3] = new Vector2(regionRect.Position.x, regionRect.End.y);
+			polygon2D.Uv = uv;
+
+			Vector2 skew = new Vector2(30, -10);
+			Vector2[] polygon = new Vector2[4];
+			Vector2 tileOffset = this.TileSet.TileGetTextureOffset(tileId);
+			polygon[0] = new Vector2(0, 0) + tileOffset + skew;
+			polygon[1] = new Vector2(regionRect.Size.x, 0) + tileOffset + skew;
+			polygon[2] = regionRect.Size + tileOffset;
+			polygon[3] = new Vector2(0, regionRect.Size.y) + tileOffset;
+			polygon2D.Polygon = polygon;
 
 			// Add the sprite as a child to Shadows TileMap
-			shadowTileMap.AddChild(sprite);
+			shadowTileMap.AddChild(polygon2D);
 
 
 		}
