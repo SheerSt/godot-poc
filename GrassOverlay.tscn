@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GrassOverlay.cs" type="Script" id=1]
+[ext_resource path="res://red1-grassoverlay1.png" type="Texture" id=2]
+
+[node name="GrassOverlay" type="Sprite"]
+position = Vector2( 0, 4 )
+texture = ExtResource( 2 )
+hframes = 6
+vframes = 8
+script = ExtResource( 1 )

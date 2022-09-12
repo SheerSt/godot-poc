@@ -57,14 +57,14 @@ public class Trees : TileMap
 
 			Vector2[] polygon = new Vector2[4];
 			Vector2 tileOffset = this.TileSet.TileGetTextureOffset(tileId);
-			tileOffset += new Vector2(3, 0);  // Looks good visually.
+			tileOffset += new Vector2(3, 0);  // Looks good visually. TODO: scale according to time of day.
 			Vector2 ySortOffset = new Vector2(0, regionRect.Size.y - 8);  //-16 is to look good visually.
 			polygon[0] = new Vector2(0, 0) + tileOffset - ySortOffset + skew;
 			polygon[1] = new Vector2(regionRect.Size.x, 0) + tileOffset - ySortOffset + skew;
 			polygon[2] = regionRect.Size + tileOffset - ySortOffset;
 			polygon[3] = new Vector2(0, regionRect.Size.y) - ySortOffset + tileOffset;
 			polygon2D.Polygon = polygon;
-			polygon2D.Modulate = new Color(0f, 0f, 0f, 0.3f);
+			polygon2D.Modulate = new Color(0f, 0f, 0f, 0.15f);
 
 			// Try to get Y sort to work.
 			polygon2D.Position += ySortOffset;

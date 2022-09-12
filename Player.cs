@@ -21,8 +21,10 @@ public class Player : KinematicBody2D
 	Sprite background;
 	Image bumpMap;
 	int[][] bumps;
+	public int yOffset;
 
 	float footprintTimer = 30;
+	//float grassOverlayTimer = 0;
 
 	public override void _Ready()
 	{
@@ -78,7 +80,7 @@ public class Player : KinematicBody2D
         }
 
 		// Offset sprite based on terrain.
-		OffsetSprite();
+		this.yOffset = OffsetSprite();
 
 	}
 
@@ -161,7 +163,7 @@ public class Player : KinematicBody2D
 
 			}
 			if (!animationPlayer.PlaybackSpeed.Equals(speed))
-            {
+			{
 
 				animationPlayer.PlaybackSpeed = speed;
 
@@ -170,15 +172,15 @@ public class Player : KinematicBody2D
 			Vector2 moveAmount = MoveAndSlide(directionNor * speed * 65);
 
 			KinematicCollision2D collision = GetLastSlideCollision();
-            if (collision != null && !audioPlayer.Playing)
-            {
+			if (collision != null && !audioPlayer.Playing)
+			{
 
-                speed = 1;
-                audioPlayer.Stream = bumpSound;
-                //audioPlayer.VolumeDb = 0.5f;
-                audioPlayer.Play();
+				speed = 1;
+				audioPlayer.Stream = bumpSound;
+				//audioPlayer.VolumeDb = 0.5f;
+				audioPlayer.Play();
 
-            }
+			}
 
 
 			// Walk sound
@@ -200,11 +202,11 @@ public class Player : KinematicBody2D
 			}
 
 			// Offset sprite based on terrain.
-			int yOffset = OffsetSprite();
+			this.yOffset = OffsetSprite();
 
 			footprintTimer += delta * speed;
 			if (footprintTimer > .3f)
-            {
+			{
 
 				footprintTimer = 0;
 				PackedScene footPrints = GD.Load<PackedScene>("res://footprints.tscn");
@@ -212,8 +214,6 @@ public class Player : KinematicBody2D
 				Sprite sprite = node.GetChild<Sprite>(0);
 				sprite.Position = Position.Floor() + new Vector2(0, 8 - yOffset);
 				yOffset += 2;
-				float a = ((float)yOffset / 12f);
-				sprite.Modulate = new Color(1f, 1f, 1f, a);
 
 				if (direction == new Vector2(1, 0))
 				{
@@ -253,8 +253,18 @@ public class Player : KinematicBody2D
 				}
 
 				AnimationPlayer animationPlayer = node.GetChild<AnimationPlayer>(1);
-				animationPlayer.CurrentAnimation = "footprints-fade";
+
+				float a = ((float)yOffset / 12f);
+				// yOffset > 3 means the player is in a grassy area, for now.
+				if (yOffset >= 4)
+				{
+					animationPlayer.CurrentAnimation = "footprints-fade-grass";
+					a = .5f;
+				}
+				else animationPlayer.CurrentAnimation = "footprints-fade-sand";
 				animationPlayer.Play();
+
+				sprite.Modulate = new Color(1f, 1f, 1f, a);
 
 				TileMap tileMap = (TileMap)Game.instance.FindNode("TileMap");
 
@@ -263,6 +273,28 @@ public class Player : KinematicBody2D
 				//Game.instance.MoveChild(node, 0);
 
 			}
+
+			/*grassOverlayTimer += delta * speed;
+			if (grassOverlayTimer > .1f)
+			{
+				
+				PackedScene footPrints = GD.Load<PackedScene>("res://GrassOverlay.tscn");
+				Sprite sprite = (Sprite)footPrints.Instance();
+
+				// Align to Player sprite.
+				sprite.Position = Position + sprite.Position;
+
+				// Copy the player Sprite's frame number.
+				sprite.Frame = this.sprite.Frame;
+
+				// Copy the player Sprite's horizontal flip.
+				sprite.FlipH = this.sprite.FlipH;
+
+				GetParent().AddChild(sprite);
+
+				grassOverlayTimer = 0f;
+
+			}*/
 
 		}
 		else
@@ -273,6 +305,7 @@ public class Player : KinematicBody2D
 			//Vector2 offset = (Position - Position.Floor());
 			//sprite.Position= new Vector2(-offset.x, -offset.y + 4);
 
+			//grassOverlayTimer = 0f;
 			footprintTimer = 30;
 
 			// Test
@@ -288,11 +321,5 @@ public class Player : KinematicBody2D
 
 
 	}
-
-	public void OnBodyEntered()
-    {
-
-
-    }
 
 }
