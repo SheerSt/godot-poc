@@ -11,7 +11,8 @@ public class Trees : TileMap
 	public override void _Ready()
 	{
 
-		TileMap shadowTileMap = GetNode<TileMap>("/root/Game/Shadows");
+		//TileMap shadowTileMap = GetNode<TileMap>("/root/Game/Shadows");
+		TileMap shadowTileMap = GetNode<TileMap>("/root/Game/Trees");
 
 		// For each tile
 		foreach (Vector2 position in GetUsedCells())
@@ -50,14 +51,23 @@ public class Trees : TileMap
 			uv[3] = new Vector2(regionRect.Position.x, regionRect.End.y);
 			polygon2D.Uv = uv;
 
-			Vector2 skew = new Vector2(30, -10);
+			// This starts at 0,0, and defines the skew.
+			//Vector2 skew = new Vector2(30, regionRect.Size.y + regionRect.Size.y / 2);
+			Vector2 skew = new Vector2(regionRect.Size.y / 2, regionRect.Size.y + regionRect.Size.y / 2);
+
 			Vector2[] polygon = new Vector2[4];
 			Vector2 tileOffset = this.TileSet.TileGetTextureOffset(tileId);
-			polygon[0] = new Vector2(0, 0) + tileOffset + skew;
-			polygon[1] = new Vector2(regionRect.Size.x, 0) + tileOffset + skew;
-			polygon[2] = regionRect.Size + tileOffset;
-			polygon[3] = new Vector2(0, regionRect.Size.y) + tileOffset;
+			tileOffset += new Vector2(3, 0);  // Looks good visually.
+			Vector2 ySortOffset = new Vector2(0, regionRect.Size.y - 8);  //-16 is to look good visually.
+			polygon[0] = new Vector2(0, 0) + tileOffset - ySortOffset + skew;
+			polygon[1] = new Vector2(regionRect.Size.x, 0) + tileOffset - ySortOffset + skew;
+			polygon[2] = regionRect.Size + tileOffset - ySortOffset;
+			polygon[3] = new Vector2(0, regionRect.Size.y) - ySortOffset + tileOffset;
 			polygon2D.Polygon = polygon;
+			polygon2D.Modulate = new Color(0f, 0f, 0f, 0.3f);
+
+			// Try to get Y sort to work.
+			polygon2D.Position += ySortOffset;
 
 			// Add the sprite as a child to Shadows TileMap
 			shadowTileMap.AddChild(polygon2D);
