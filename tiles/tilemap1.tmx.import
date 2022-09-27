@@ -2,12 +2,12 @@
 
 importer="vnen.tiled_importer"
 type="PackedScene"
-path="res://.import/tilemap1.tmx-db88852156d1be2a5d68269768ac285b.scn"
+path="res://.import/tilemap1.tmx-f1159787da09239e3d01e0bd5106668c.scn"
 
 [deps]
 
-source_file="res://tiles/tilemap1.tmx"
-dest_files=[ "res://.import/tilemap1.tmx-db88852156d1be2a5d68269768ac285b.scn" ]
+source_file="res://Tiles/tilemap1.tmx"
+dest_files=[ "res://.import/tilemap1.tmx-f1159787da09239e3d01e0bd5106668c.scn" ]
 
 [params]
 

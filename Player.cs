@@ -36,9 +36,9 @@ public class Player : KinematicBody2D
     public override void _Ready()
     {
 
-        bumpSound = ResourceLoader.Load<AudioStreamOGGVorbis>("bump2.ogg");
+        bumpSound = ResourceLoader.Load<AudioStreamOGGVorbis>("Sounds/bump2.ogg");
         bumpSound.Loop = false;
-        walkSound = ResourceLoader.Load<AudioStreamOGGVorbis>("walk1.ogg");
+        walkSound = ResourceLoader.Load<AudioStreamOGGVorbis>("Sounds/walk1.ogg");
         walkSound.Loop = false;
 
         sprite = (Sprite)FindNode("Sprite");
@@ -196,8 +196,8 @@ public class Player : KinematicBody2D
             {
 
                 AudioStreamOGGVorbis sound;
-                if (speed > 1) sound = ResourceLoader.Load<AudioStreamOGGVorbis>("run1.ogg");
-                else sound = ResourceLoader.Load<AudioStreamOGGVorbis>("walk2.ogg");
+                if (speed > 1) sound = ResourceLoader.Load<AudioStreamOGGVorbis>("Sounds/run1.ogg");
+                else sound = ResourceLoader.Load<AudioStreamOGGVorbis>("Sounds/walk2.ogg");
                 sound.Loop = false;
                 player.Stream = sound;
                 player.Play();

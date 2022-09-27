@@ -4,13 +4,13 @@ using System;
 public class Game : Node2D
 {
 
-    public static Game instance;
+	public static Game instance;
 
-    public override void _Ready()
-    {
+	public override void _Ready()
+	{
 
-        if (Game.instance == null) Game.instance = this;
+		if (Game.instance == null) Game.instance = this;
 
-    }
+	}
 
 }
