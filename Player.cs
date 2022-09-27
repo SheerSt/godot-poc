@@ -2,53 +2,59 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-// csharp game example - https://github.com/Revolutionary-Games/Thrive
+/** 
+ * References:
+ * 
+ * csharp game example - https://github.com/Revolutionary-Games/Thrive
+ * Godot csharp documentation - https://cyoann.github.io/GodotSharpAPI/
+ *  - Note: Godot csharp api is usually the exact same as gdscript, except it uses CamelCase instead of underscore_case.
+ * 
+ */
 
 public class Player : KinematicBody2D
 {
 
-	String animationName;
-	String previousDirectionName = "down";
-	float speed;
-	Vector2 direction = new Vector2();
-	AudioStreamOGGVorbis bumpSound;
-	AudioStreamOGGVorbis walkSound;
-	Sprite sprite;
-	AnimationPlayer animationPlayer;
-	AudioStreamPlayer2D audioPlayer;
-	CollisionShape2D collisionShape2D;
+    String animationName;
+    String previousDirectionName = "down";
+    float speed;
+    Vector2 direction = new Vector2();
+    AudioStreamOGGVorbis bumpSound;
+    AudioStreamOGGVorbis walkSound;
+    Sprite sprite;
+    AnimationPlayer animationPlayer;
+    AudioStreamPlayer2D audioPlayer;
+    CollisionShape2D collisionShape2D;
 
-	Sprite background;
-	Image bumpMap;
-	int[][] bumps;
-	public int yOffset;
+    Sprite background;
+    Image bumpMap;
+    int[][] bumps;
+    public int yOffset;
 
-	float footprintTimer = 30;
-	//float grassOverlayTimer = 0;
+    float footprintTimer = 30;
+    //float grassOverlayTimer = 0;
 
-	public override void _Ready()
-	{
+    public override void _Ready()
+    {
 
-		bumpSound = ResourceLoader.Load<AudioStreamOGGVorbis>("bump2.ogg");
-		bumpSound.Loop = false;
-		walkSound = ResourceLoader.Load<AudioStreamOGGVorbis>("walk1.ogg");
-		walkSound.Loop = false;
+        bumpSound = ResourceLoader.Load<AudioStreamOGGVorbis>("bump2.ogg");
+        bumpSound.Loop = false;
+        walkSound = ResourceLoader.Load<AudioStreamOGGVorbis>("walk1.ogg");
+        walkSound.Loop = false;
 
-		sprite = (Sprite)FindNode("Sprite");
-		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
-		audioPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/AudioStreamPlayer2D");
+        sprite = (Sprite)FindNode("Sprite");
+        animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
+        audioPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/AudioStreamPlayer2D");
         collisionShape2D = (CollisionShape2D)FindNode("CollisionShape2D");
 
-		// TODO: move somewhere
-		background = GetNode<Sprite>("/root/Game/Background");
-		bumpMap = background.Texture.GetData();
-		//bumpMap = ResourceLoader.Load<Texture>("new-bark-town1-bump.png").GetData();
-		bumpMap.Lock();
-		int width = bumpMap.GetWidth();
-		int height = bumpMap.GetHeight();
-		bumps = new int[width][];
-		// Get bump map offsets.
-		float sum = 0f;
+        // TODO: move to a method
+        background = GetNode<Sprite>("/root/Game/Background");
+        bumpMap = background.Texture.GetData();
+        bumpMap.Lock();
+        int width = bumpMap.GetWidth();
+        int height = bumpMap.GetHeight();
+        bumps = new int[width][];
+        // Get bump map offsets.
+        float sum = 0f;
         for (int k = 0; k < width; ++k)
         {
 
@@ -72,254 +78,220 @@ public class Player : KinematicBody2D
                     }
 
                 }
-                sum = sum / 32f;
+
+                // sum = sum / 32f;  // Looked good.
+                // sum = sum / 64f;  // Looked good but very subtle.
+                sum = sum / 52f;
                 bumps[k][l] = (int)sum;
 
             }
 
         }
 
-		// Offset sprite based on terrain.
-		this.yOffset = OffsetSprite();
+        // Offset sprite based on terrain.
+        this.yOffset = OffsetSprite();
 
-	}
+    }
 
     /**
-	 * Offset sprite based on terrain.
-	 */
+     * Offset sprite based on terrain.
+     */
     public int OffsetSprite()
     {
 
-		Vector2 newPos = new Vector2(Position.x, Position.y) - background.Position;
-		int xPos = (int)newPos.x;
-		int yPos = (int)newPos.y;
-		int offsetY = 0;
-		if (0 < xPos && xPos < bumps.Length && 0 < yPos && yPos < bumps[xPos].Length)
-		{
+        Vector2 newPos = new Vector2(Position.x, Position.y) - background.Position;
+        int xPos = (int)newPos.x;
+        int yPos = (int)newPos.y;
+        int offsetY = 0;
+        if (0 < xPos && xPos < bumps.Length && 0 < yPos && yPos < bumps[xPos].Length)
+        {
 
-			offsetY = bumps[xPos][yPos];
-			this.sprite.Position = new Vector2(0, 4 - offsetY);
-			this.collisionShape2D.Position = new Vector2(0, 10 - offsetY); ;
+            offsetY = bumps[xPos][yPos];
+            this.sprite.Position = new Vector2(0, 4 - offsetY);
+            this.collisionShape2D.Position = new Vector2(0, 10 - offsetY); ;
 
-		}
-		return offsetY;
+        }
+        return offsetY;
 
-	}
+    }
 
     public override void _Process(float delta)
     {
-		if (Input.IsKeyPressed((int)Godot.KeyList.X))
-		{
+        if (Input.IsKeyPressed((int)Godot.KeyList.X))
+        {
 
-			animationName = "run-";
-			speed = 1.5f;
+            animationName = "run-";
+            speed = 1.5f;
 
-		}
-		else
-		{
-			animationName = "walk-";
-			speed = 1f;
-		}
+        }
+        else
+        {
+            animationName = "walk-";
+            speed = 1f;
+        }
 
         direction = new Vector2(0, 0);
 
-		String directionName = "";
-		if (Input.IsKeyPressed((int)Godot.KeyList.Up))
-		{
-			directionName += "up";
-			direction.y -= 1;
-		}
-		else if (Input.IsKeyPressed((int)Godot.KeyList.Down))
-		{
-			directionName += "down";
-			direction.y += 1;
-		}
-		if (Input.IsKeyPressed((int)Godot.KeyList.Right))
-		{
-			directionName += "right";
-			direction.x += 1;
-		}
-		else if (Input.IsKeyPressed((int)Godot.KeyList.Left))
-		{
-			directionName += "left";
-			direction.x -= 1;
-		}
+        String directionName = "";
+        if (Input.IsKeyPressed((int)Godot.KeyList.Up))
+        {
+            directionName += "up";
+            direction.y -= 1;
+        }
+        else if (Input.IsKeyPressed((int)Godot.KeyList.Down))
+        {
+            directionName += "down";
+            direction.y += 1;
+        }
+        if (Input.IsKeyPressed((int)Godot.KeyList.Right))
+        {
+            directionName += "right";
+            direction.x += 1;
+        }
+        else if (Input.IsKeyPressed((int)Godot.KeyList.Left))
+        {
+            directionName += "left";
+            direction.x -= 1;
+        }
 
-		Vector2 directionNor = direction.Normalized();
+        Vector2 directionNor = direction.Normalized();
 
-		if (direction != Vector2.Zero)
-		{
+        if (direction != Vector2.Zero)
+        {
 
-			previousDirectionName = directionName;
-			animationName += previousDirectionName;
+            previousDirectionName = directionName;
+            animationName += previousDirectionName;
 
-			if (!animationPlayer.CurrentAnimation.Equals(animationName))
-			{
+            if (!animationPlayer.CurrentAnimation.Equals(animationName))
+            {
 
-				float position = animationPlayer.CurrentAnimationPosition;
-				animationPlayer.Stop(true);
-				animationPlayer.Play(animationName);
-				// animationPlayer.Seek(position % animationPlayer.CurrentAnimationLength); // won't work due to hflip
+                float position = animationPlayer.CurrentAnimationPosition;
+                animationPlayer.Stop(true);
+                animationPlayer.Play(animationName);
 
-			}
-			if (!animationPlayer.PlaybackSpeed.Equals(speed))
-			{
+            }
+            if (!animationPlayer.PlaybackSpeed.Equals(speed))
+            {
 
-				animationPlayer.PlaybackSpeed = speed;
+                animationPlayer.PlaybackSpeed = speed;
 
-			}
+            }
 
-			Vector2 moveAmount = MoveAndSlide(directionNor * speed * 65);
+            Vector2 moveAmount = MoveAndSlide(directionNor * speed * 65);
 
-			KinematicCollision2D collision = GetLastSlideCollision();
-			if (collision != null && !audioPlayer.Playing)
-			{
+            KinematicCollision2D collision = GetLastSlideCollision();
+            if (collision != null && !audioPlayer.Playing)
+            {
 
-				speed = 1;
-				audioPlayer.Stream = bumpSound;
-				//audioPlayer.VolumeDb = 0.5f;
-				audioPlayer.Play();
+                speed = 1;
+                audioPlayer.Stream = bumpSound;
+                audioPlayer.Play();
 
-			}
+            }
 
 
-			// Walk sound
-			AudioStreamPlayer player = (AudioStreamPlayer)FindNode("Sounds");
-			if (!player.Playing)
-			{
+            // Walk sound
+            AudioStreamPlayer player = (AudioStreamPlayer)FindNode("Sounds");
+            if (!player.Playing)
+            {
 
-				//audioPlayer.Stream = walkSound;
-				//audioPlayer.Play();
+                AudioStreamOGGVorbis sound;
+                if (speed > 1) sound = ResourceLoader.Load<AudioStreamOGGVorbis>("run1.ogg");
+                else sound = ResourceLoader.Load<AudioStreamOGGVorbis>("walk2.ogg");
+                sound.Loop = false;
+                player.Stream = sound;
+                player.Play();
 
-				AudioStreamOGGVorbis sound;
-				if (speed > 1) sound = ResourceLoader.Load<AudioStreamOGGVorbis>("run1.ogg");
-				else sound = ResourceLoader.Load<AudioStreamOGGVorbis>("walk2.ogg");
-				sound.Loop = false;
-				player.Stream = sound;
-				player.Play();
+            }
 
+            // Offset sprite based on terrain.
+            this.yOffset = OffsetSprite();
 
-			}
+            // Check if it's time to have the player leave a footprint.
+            // Footprint is a Node with an Animation that plays. The Animation deletes the Node when it's done.
+            footprintTimer += delta * speed;
+            if (footprintTimer > .3f)
+            {
 
-			// Offset sprite based on terrain.
-			this.yOffset = OffsetSprite();
+                footprintTimer = 0;
+                PackedScene footPrints = GD.Load<PackedScene>("res://footprints.tscn");
+                Node node = footPrints.Instance();
+                Sprite sprite = node.GetChild<Sprite>(0);
+                sprite.Position = Position.Floor() + new Vector2(0, 8 - yOffset);
+                yOffset += 2;
 
-			footprintTimer += delta * speed;
-			if (footprintTimer > .3f)
-			{
+                if (direction == new Vector2(1, 0))
+                {
+                    sprite.Frame = 0;
+                }
+                else if (direction == new Vector2(-1, 0))
+                {
+                    sprite.Frame = 0;
+                    sprite.FlipH = true;
+                }
+                else if (direction == new Vector2(0, 1))
+                {
+                    sprite.Frame = 1;
+                }
+                else if (direction == new Vector2(0, -1))
+                {
+                    sprite.Frame = 1;
+                    sprite.FlipV = true;
+                }
+                else if (direction == new Vector2(1, -1))
+                {
+                    sprite.Frame = 2;
+                }
+                else if (direction == new Vector2(-1, -1))
+                {
+                    sprite.Frame = 2;
+                    sprite.FlipH = true;
+                }
+                else if (direction == new Vector2(1, 1))
+                {
+                    sprite.Frame = 3;
+                }
+                else if (direction == new Vector2(-1, 1))
+                {
+                    sprite.Frame = 3;
+                    sprite.FlipH = true;
+                }
 
-				footprintTimer = 0;
-				PackedScene footPrints = GD.Load<PackedScene>("res://footprints.tscn");
-				Node node = footPrints.Instance();
-				Sprite sprite = node.GetChild<Sprite>(0);
-				sprite.Position = Position.Floor() + new Vector2(0, 8 - yOffset);
-				yOffset += 2;
+                AnimationPlayer animationPlayer = node.GetChild<AnimationPlayer>(1);
 
-				if (direction == new Vector2(1, 0))
-				{
-					sprite.Frame = 0;
-				}
-				else if (direction == new Vector2(-1, 0))
-				{
-					sprite.Frame = 0;
-					sprite.FlipH = true;
-				}
-				else if (direction == new Vector2(0, 1))
-				{
-					sprite.Frame = 1;
-				}
-				else if (direction == new Vector2(0, -1))
-				{
-					sprite.Frame = 1;
-					sprite.FlipV = true;
-				}
-				else if (direction == new Vector2(1, -1))
-				{
-					sprite.Frame = 2;
-				}
-				else if (direction == new Vector2(-1, -1))
-				{
-					sprite.Frame = 2;
-					sprite.FlipH = true;
-				}
-				else if (direction == new Vector2(1, 1))
-				{
-					sprite.Frame = 3;
-				}
-				else if (direction == new Vector2(-1, 1))
-				{
-					sprite.Frame = 3;
-					sprite.FlipH = true;
-				}
+                float a = ((float)yOffset / 12f);
+                // yOffset >= 4 means the player is in a grassy area.
+                if (yOffset >= 4)
+                {
+                    animationPlayer.CurrentAnimation = "footprints-fade-grass";
+                    a = .5f;
+                }
+                else animationPlayer.CurrentAnimation = "footprints-fade-sand";
+                animationPlayer.Play();
 
-				AnimationPlayer animationPlayer = node.GetChild<AnimationPlayer>(1);
+                sprite.Modulate = new Color(1f, 1f, 1f, a);
 
-				float a = ((float)yOffset / 12f);
-				// yOffset > 3 means the player is in a grassy area, for now.
-				if (yOffset >= 4)
-				{
-					animationPlayer.CurrentAnimation = "footprints-fade-grass";
-					a = .5f;
-				}
-				else animationPlayer.CurrentAnimation = "footprints-fade-sand";
-				animationPlayer.Play();
+                TileMap tileMap = (TileMap)Game.instance.FindNode("TileMap");
 
-				sprite.Modulate = new Color(1f, 1f, 1f, a);
+                Game.instance.AddChildBelowNode(tileMap, node);
 
-				TileMap tileMap = (TileMap)Game.instance.FindNode("TileMap");
+            }
 
-				Game.instance.AddChildBelowNode(tileMap, node);
-				//Game.instance.AddChildBelowNode(this.GetParent(), node);
-				//Game.instance.MoveChild(node, 0);
+        }
+        else
+        {
 
-			}
+            footprintTimer = 30;
 
-			/*grassOverlayTimer += delta * speed;
-			if (grassOverlayTimer > .1f)
-			{
-				
-				PackedScene footPrints = GD.Load<PackedScene>("res://GrassOverlay.tscn");
-				Sprite sprite = (Sprite)footPrints.Instance();
+            // Restart the idle animation, since player isn't moving.
+            // Idle animation is just the player blinking occasionally.
+            animationName = "idle-";
+            animationName += previousDirectionName;
+            animationPlayer.Play(animationName);
 
-				// Align to Player sprite.
-				sprite.Position = Position + sprite.Position;
-
-				// Copy the player Sprite's frame number.
-				sprite.Frame = this.sprite.Frame;
-
-				// Copy the player Sprite's horizontal flip.
-				sprite.FlipH = this.sprite.FlipH;
-
-				GetParent().AddChild(sprite);
-
-				grassOverlayTimer = 0f;
-
-			}*/
-
-		}
-		else
-		{
-
-			// Doesn't work.
-			// Round sprite position to nearest pixel (prevents camera weirdness).
-			//Vector2 offset = (Position - Position.Floor());
-			//sprite.Position= new Vector2(-offset.x, -offset.y + 4);
-
-			//grassOverlayTimer = 0f;
-			footprintTimer = 30;
-
-			// Test
-			animationName = "idle-";
-			animationName += previousDirectionName;
-			animationPlayer.Play(animationName);
-
-			//
-			//if (animationPlayer.IsPlaying()) animationPlayer.Seek(0, true);
-			//animationPlayer.Stop(true);
-
-		}
+        }
 
 
-	}
+    }
 
 }
