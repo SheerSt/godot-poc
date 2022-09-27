@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/red1.png-128385062d649a0b03c9c40153981dde.stex"
+path="res://.import/new-bark-town2.png-6769d8e78271adbd7c9e484ee9f2c898.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://red1.png"
-dest_files=[ "res://.import/red1.png-128385062d649a0b03c9c40153981dde.stex" ]
+source_file="res://Images/new-bark-town2.png"
+dest_files=[ "res://.import/new-bark-town2.png-6769d8e78271adbd7c9e484ee9f2c898.stex" ]
 
 [params]
 

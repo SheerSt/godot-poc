@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/red1-grassoverlay1.png-52321f1ff63ae0ccb6e3135e198c6994.stex"
+path="res://.import/red1-grassoverlay1.png-5e1af4fe6a211c589f16f4176dbcc6fa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://red1-grassoverlay1.png"
-dest_files=[ "res://.import/red1-grassoverlay1.png-52321f1ff63ae0ccb6e3135e198c6994.stex" ]
+source_file="res://Images/red1-grassoverlay1.png"
+dest_files=[ "res://.import/red1-grassoverlay1.png-5e1af4fe6a211c589f16f4176dbcc6fa.stex" ]
 
 [params]
 

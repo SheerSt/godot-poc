@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://footprints2.png" type="Texture" id=1]
+[ext_resource path="res://Images/footprints2.png" type="Texture" id=1]
 
 [sub_resource type="Animation" id=1]
 length = 0.001

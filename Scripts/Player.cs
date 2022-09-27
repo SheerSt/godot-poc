@@ -22,7 +22,7 @@ public class Player : KinematicBody2D
     AudioStreamOGGVorbis walkSound;
     Sprite sprite;
     AnimationPlayer animationPlayer;
-    AudioStreamPlayer2D audioPlayer;
+    AudioStreamPlayer2D bumpSoundPlayer;
     CollisionShape2D collisionShape2D;
 
     Sprite background;
@@ -43,7 +43,7 @@ public class Player : KinematicBody2D
 
         sprite = (Sprite)FindNode("Sprite");
         animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
-        audioPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/AudioStreamPlayer2D");
+        bumpSoundPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/Trees/Player/BumpSoundPlayer");
         collisionShape2D = (CollisionShape2D)FindNode("CollisionShape2D");
 
         // TODO: move to a method
@@ -180,12 +180,12 @@ public class Player : KinematicBody2D
             Vector2 moveAmount = MoveAndSlide(directionNor * speed * 65);
 
             KinematicCollision2D collision = GetLastSlideCollision();
-            if (collision != null && !audioPlayer.Playing)
+            if (collision != null && !bumpSoundPlayer.Playing)
             {
 
                 speed = 1;
-                audioPlayer.Stream = bumpSound;
-                audioPlayer.Play();
+                bumpSoundPlayer.Stream = bumpSound;
+                bumpSoundPlayer.Play();
 
             }
 
@@ -214,7 +214,7 @@ public class Player : KinematicBody2D
             {
 
                 footprintTimer = 0;
-                PackedScene footPrints = GD.Load<PackedScene>("res://footprints.tscn");
+                PackedScene footPrints = GD.Load<PackedScene>("res://Scenes/Footprints.tscn");
                 Node node = footPrints.Instance();
                 Sprite sprite = node.GetChild<Sprite>(0);
                 sprite.Position = Position.Floor() + new Vector2(0, 8 - yOffset);
