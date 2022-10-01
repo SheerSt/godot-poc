@@ -6,7 +6,7 @@ public class Trees : TileMap {
     public override void _Ready()
     {
 
-        TileMap shadowTileMap = GetNode<TileMap>("/root/Game/Trees");
+        TileMap shadowTileMap = GetNode<TileMap>("/root/Game/Map/Trees");
 
         // For each tile
         foreach (Vector2 position in GetUsedCells())
