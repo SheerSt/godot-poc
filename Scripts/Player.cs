@@ -10,7 +10,6 @@ using Godot;
  *  - Note: Godot csharp api is usually the exact same as gdscript, except it uses CamelCase instead of underscore_case.
  * 
  */
-
 public class Player : KinematicBody2D
 {
 
@@ -46,9 +45,11 @@ public class Player : KinematicBody2D
 		bumpSoundPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/Map/Trees/Player/BumpSoundPlayer");
 		collisionShape2D = (CollisionShape2D)FindNode("CollisionShape2D");
 
+		// TODO: might need to get this working for a tileset.
 		// TODO: move to a method
+		/*
 		background = GetNode<Sprite>("/root/Game/Map/Background");
-		bumpMap = background.Texture.GetData();
+ {		bumpMap = background.Texture.GetData();
 		bumpMap.Lock();
 		int width = bumpMap.GetWidth();
 		int height = bumpMap.GetHeight();
@@ -90,6 +91,7 @@ public class Player : KinematicBody2D
 
 		// Offset sprite based on terrain.
 		this.yOffset = OffsetSprite();
+		*/
 
 	}
 
@@ -122,6 +124,8 @@ public class Player : KinematicBody2D
 
 			animationName = "run-";
 			speed = 1.5f;
+
+			if (Game.instance.debugMode && Input.IsKeyPressed((int)Godot.KeyList.Space)) speed = 10f;
 
 		}
 		else
@@ -205,7 +209,8 @@ public class Player : KinematicBody2D
 			}
 
 			// Offset sprite based on terrain.
-			this.yOffset = OffsetSprite();
+			//this.yOffset = OffsetSprite();  // TODO: uncomment
+			this.yOffset = 0;  // TODO: remove
 
 			// Check if it's time to have the player leave a footprint.
 			// Footprint is a Node with an Animation that plays. The Animation deletes the Node when it's done.

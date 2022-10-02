@@ -5,6 +5,7 @@ public class Game : Node2D
 {
 
 	public static Game instance;
+	public bool debugMode = true;
 
 	public override void _Ready()
 	{

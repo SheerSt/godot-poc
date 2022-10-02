@@ -12,7 +12,17 @@ centered = false
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 2 )
-cell_size = Vector2( 16, 16 )
+cell_size = Vector2( 8, 8 )
+cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
+cell_tile_origin = 2
+cell_y_sort = true
+format = 1
+
+[node name="Grass" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 8, 8 )
+cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
+cell_tile_origin = 2
 cell_y_sort = true
 format = 1
 
