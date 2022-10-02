@@ -10,3 +10,8 @@ texture = ExtResource( 2 )
 
 [node name="MoveTimer" parent="." index="2"]
 wait_time = 0.01
+
+[node name="DirtTimer" type="Timer" parent="." index="4"]
+wait_time = 0.25
+
+[connection signal="timeout" from="DirtTimer" to="." method="_on_DirtTimer_timeout"]
