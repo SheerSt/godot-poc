@@ -6,6 +6,7 @@ public class Game : Node2D
 
 	public static Game instance;
 	public bool debugMode = true;
+	public static Random random = new Random();
 
 	public override void _Ready()
 	{

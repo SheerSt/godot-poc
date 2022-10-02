@@ -23,6 +23,7 @@ public class Player : KinematicBody2D
 	AnimationPlayer animationPlayer;
 	AudioStreamPlayer2D bumpSoundPlayer;
 	CollisionShape2D collisionShape2D;
+	Camera2D camera2D;
 
 	Sprite background;
 	Image bumpMap;
@@ -30,6 +31,7 @@ public class Player : KinematicBody2D
 	public int yOffset;
 
 	float footprintTimer = 30;
+	bool justPressedX = true;
 	//float grassOverlayTimer = 0;
 
 	public override void _Ready()
@@ -44,6 +46,7 @@ public class Player : KinematicBody2D
 		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
 		bumpSoundPlayer = GetNode<AudioStreamPlayer2D>("/root/Game/Map/Trees/Player/BumpSoundPlayer");
 		collisionShape2D = (CollisionShape2D)FindNode("CollisionShape2D");
+		camera2D = (Camera2D)FindNode("Camera2D");
 
 		// TODO: might need to get this working for a tileset.
 		// TODO: move to a method
@@ -127,12 +130,37 @@ public class Player : KinematicBody2D
 
 			if (Game.instance.debugMode && Input.IsKeyPressed((int)Godot.KeyList.Space)) speed = 10f;
 
+			//
+			if (justPressedX)
+			{
+				justPressedX = false;
+				camera2D.SmoothingEnabled = true;
+				camera2D.SmoothingSpeed = 8f;
+			}
+			else if (!camera2D.GetCameraScreenCenter().IsEqualApprox(camera2D.GetCameraPosition()))
+				camera2D.SmoothingSpeed += 0.2f;
+			else
+				camera2D.SmoothingEnabled = false;
+
 		}
 		else
 		{
 			animationName = "walk-";
 			speed = 1f;
+
+			//
+			if (!justPressedX)
+				justPressedX = true;
+			if (!camera2D.GetCameraScreenCenter().IsEqualApprox(camera2D.GetCameraPosition()))
+				camera2D.SmoothingSpeed += 0.4f;
+			else
+				camera2D.SmoothingEnabled = false;
 		}
+
+		//GD.Print(camera2D.SmoothingEnabled);
+		//GD.Print(camera2D.SmoothingSpeed);
+		//GD.Print(camera2D.GetCameraScreenCenter());
+		//GD.Print(camera2D.GetCameraPosition());
 
 		direction = new Vector2(0, 0);
 
