@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/Map.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Monsters/Diglett/Diglett.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Monsters/Nidorino/Nidorino.tscn" type="PackedScene" id=3]
 
 [node name="Map" instance=ExtResource( 1 )]
 
@@ -16,3 +17,6 @@ tile_data = PoolIntArray( -1376258, 1, 0, -1441792, 1, 0, -1245212, 1, 0, -12452
 
 [node name="Monster" parent="Trees" index="1" instance=ExtResource( 2 )]
 position = Vector2( 28, -19 )
+
+[node name="Monster2" parent="Trees" index="2" instance=ExtResource( 3 )]
+position = Vector2( 94, 7 )

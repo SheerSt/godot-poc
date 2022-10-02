@@ -6,16 +6,17 @@ public class Monster : KinematicBody2D
 {
 
 	public Direction direction = Direction.NONE;
-	public Timer moveTimer;
 	public float speed = 1f;
-	public float walkingTimer = 0f;
 	public Sprite sprite;
 	public AnimationPlayer animationPlayer;
+	public Timer moveTimer;
+	public Timer walkingTimer;
 
 	public override void _Ready()
 	{
 		
 		moveTimer = (Timer)FindNode("MoveTimer");
+		walkingTimer = (Timer)FindNode("WalkingTimer");
 		sprite = (Sprite)FindNode("Sprite");
 		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
 
@@ -24,9 +25,9 @@ public class Monster : KinematicBody2D
 	public override void _Process(float delta)
 	{
 
-		if (walkingTimer > 0)
+		if (!this.walkingTimer.IsStopped())
 		{
-			walkingTimer -= delta;
+
 			Vector2 moveAmount = MoveAndSlide(this.direction.getVector().Normalized() * this.speed * 36);
 
 			// Snap the sprite's position to whole numbers, otherwise it looks weird.
@@ -45,7 +46,7 @@ public class Monster : KinematicBody2D
 	public void _on_MoveTimer_timeout()
 	{
 
-		walkingTimer = 1f;
+		walkingTimer.Start();
 
 		// Get a random direction;
 		this.direction = DirectionExtensions.all[Game.random.Next(0, DirectionExtensions.all.Length)];

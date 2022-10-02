@@ -22,7 +22,7 @@ public class Diglett : Monster
 
 		base._Process(delta);
 
-		if (this.walkingTimer <= 0 && this.moveTimer.IsStopped())
+		if (this.walkingTimer.IsStopped() && this.moveTimer.IsStopped())
 			this.dirtTimer.Paused = true;
 
 	}
@@ -34,7 +34,7 @@ public class Diglett : Monster
 		Node node = footPrints.Instance();
 		//Sprite sprite = (Sprite)node.FindNode("Sprite");
 		//sprite.Position = Position.Floor() + new Vector2(0, 2);  // y = 8 - yOffset
-		((Node2D)node).Position = Position.Floor() + new Vector2(0, 2);
+		((Node2D)node).Position = Position.Floor() + new Vector2(0, -5);
 		AnimationPlayer animationPlayer = (AnimationPlayer)node.FindNode("AnimationPlayer");
 		animationPlayer.CurrentAnimation = "footprints-fade-sand";
 		animationPlayer.Play();
