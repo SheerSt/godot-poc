@@ -12,6 +12,7 @@ public class Monster : KinematicBody2D
 	float walkingTimer = 0f;
 	Sprite sprite;
 	AnimationPlayer animationPlayer;
+	AudioStreamPlayer2D dirtSound;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -21,6 +22,7 @@ public class Monster : KinematicBody2D
 		dirtTimer = (Timer)FindNode("DirtTimer");
 		sprite = (Sprite)FindNode("Sprite");
 		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
+		dirtSound = (AudioStreamPlayer2D)FindNode("DirtSound");
 
 	}
 
@@ -53,16 +55,17 @@ public class Monster : KinematicBody2D
 		//
 		PackedScene footPrints = GD.Load<PackedScene>("res://Monsters/Dirt-Trail.tscn");
 		Node node = footPrints.Instance();
-		Sprite sprite = (Sprite)node.FindNode("Sprite");
-		sprite.Position = Position.Floor() + new Vector2(0, 2);  // y = 8 - yOffset
+		//Sprite sprite = (Sprite)node.FindNode("Sprite");
+		//sprite.Position = Position.Floor() + new Vector2(0, 2);  // y = 8 - yOffset
+		((Node2D)node).Position = Position.Floor() + new Vector2(0, 2);
 		AnimationPlayer animationPlayer = (AnimationPlayer)node.FindNode("AnimationPlayer");
 		animationPlayer.CurrentAnimation = "footprints-fade-sand";
 		animationPlayer.Play();
 
 		//
 		Node2D map = (Node2D)Game.instance.FindNode("Map");
-		TileMap tileMap = (TileMap)map.FindNode("TileMap");
-		map.AddChildBelowNode(tileMap, node);
+		TileMap tileMap = (TileMap)map.FindNode("Trees");
+		tileMap.AddChild(node);  // BelowNode(tileMap, 
 
 
 		//
@@ -84,6 +87,7 @@ public class Monster : KinematicBody2D
 		//
 		dirtTimer.Paused = false;
 		dirtTimer.Start();
+		dirtSound.Play();
 
 		walkingTimer = 1f;
 
