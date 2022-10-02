@@ -5,28 +5,22 @@ using System;
 public class Monster : KinematicBody2D
 {
 
-	Direction direction = Direction.NONE;
-	Timer moveTimer;
-	Timer dirtTimer;
-	float speed = 1f;
-	float walkingTimer = 0f;
-	Sprite sprite;
-	AnimationPlayer animationPlayer;
-	AudioStreamPlayer2D dirtSound;
+	public Direction direction = Direction.NONE;
+	public Timer moveTimer;
+	public float speed = 1f;
+	public float walkingTimer = 0f;
+	public Sprite sprite;
+	public AnimationPlayer animationPlayer;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-
+		
 		moveTimer = (Timer)FindNode("MoveTimer");
-		dirtTimer = (Timer)FindNode("DirtTimer");
 		sprite = (Sprite)FindNode("Sprite");
 		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
-		dirtSound = (AudioStreamPlayer2D)FindNode("DirtSound");
 
 	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	
 	public override void _Process(float delta)
 	{
 
@@ -44,50 +38,12 @@ public class Monster : KinematicBody2D
 		{
 			this.moveTimer.Start();
 			animationPlayer.Stop();
-			this.dirtTimer.Paused = true;
 		}
 
 	}
 
-	private void _on_DirtTimer_timeout()
+	public void _on_MoveTimer_timeout()
 	{
-
-		//
-		PackedScene footPrints = GD.Load<PackedScene>("res://Monsters/Dirt-Trail.tscn");
-		Node node = footPrints.Instance();
-		//Sprite sprite = (Sprite)node.FindNode("Sprite");
-		//sprite.Position = Position.Floor() + new Vector2(0, 2);  // y = 8 - yOffset
-		((Node2D)node).Position = Position.Floor() + new Vector2(0, 2);
-		AnimationPlayer animationPlayer = (AnimationPlayer)node.FindNode("AnimationPlayer");
-		animationPlayer.CurrentAnimation = "footprints-fade-sand";
-		animationPlayer.Play();
-
-		//
-		Node2D map = (Node2D)Game.instance.FindNode("Map");
-		TileMap tileMap = (TileMap)map.FindNode("Trees");
-		tileMap.AddChild(node);  // BelowNode(tileMap, 
-
-
-		//
-		PackedScene dirt = GD.Load<PackedScene>("res://Monsters/debris1.tscn");
-		node = dirt.Instance();
-		//((Node2D)node).Position = Position.Floor() + new Vector2(0, 16);  // y = 8 - yOffset
-		((Node2D)node).Position = new Vector2(0, 4);
-		animationPlayer = (AnimationPlayer)node.FindNode("AnimationPlayer");
-		animationPlayer.CurrentAnimation = "Anim1";
-		animationPlayer.Play();
-		//tileMap = (TileMap)map.FindNode("Trees");
-		this.AddChild(node);
-
-	}
-
-	private void _on_MoveTimer_timeout()
-	{
-
-		//
-		dirtTimer.Paused = false;
-		dirtTimer.Start();
-		dirtSound.Play();
 
 		walkingTimer = 1f;
 
