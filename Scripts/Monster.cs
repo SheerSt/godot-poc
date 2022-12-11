@@ -5,66 +5,66 @@ using System;
 public class Monster : KinematicBody2D
 {
 
-	public Direction direction = Direction.NONE;
-	public float speed = 1f;
-	public Sprite sprite;
-	public AnimationPlayer animationPlayer;
-	public Timer moveTimer;
-	public Timer walkingTimer;
+    public Direction direction = Direction.NONE;
+    public float speed = 1f;
+    public Sprite sprite;
+    public AnimationPlayer animationPlayer;
+    public Timer moveTimer;
+    public Timer walkingTimer;
 
-	public override void _Ready()
-	{
-		
-		moveTimer = (Timer)FindNode("MoveTimer");
-		walkingTimer = (Timer)FindNode("WalkingTimer");
-		sprite = (Sprite)FindNode("Sprite");
-		animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
+    public override void _Ready()
+    {
+        
+        moveTimer = (Timer)FindNode("MoveTimer");
+        walkingTimer = (Timer)FindNode("WalkingTimer");
+        sprite = (Sprite)FindNode("Sprite");
+        animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
 
-	}
-	
-	public override void _Process(float delta)
-	{
+    }
+    
+    public override void _Process(float delta)
+    {
 
-		if (!this.walkingTimer.IsStopped())
-		{
+        if (!this.walkingTimer.IsStopped())
+        {
 
-			Vector2 moveAmount = MoveAndSlide(this.direction.getVector().Normalized() * this.speed * 36);
+            Vector2 moveAmount = MoveAndSlide(this.direction.getVector().Normalized() * this.speed * 36);
 
-			// Snap the sprite's position to whole numbers, otherwise it looks weird.
-			// There's likely a better way to do this.
-			sprite.Position = Position.Floor() - Position;
+            // Snap the sprite's position to whole numbers, otherwise it looks weird.
+            // There's likely a better way to do this.
+            sprite.Position = Position.Floor() - Position;
 
-		}
-		else if (this.moveTimer.IsStopped())
-		{
-			this.moveTimer.Start();
-			animationPlayer.Stop();
-		}
+        }
+        else if (this.moveTimer.IsStopped())
+        {
+            this.moveTimer.Start();
+            animationPlayer.Stop();
+        }
 
-	}
+    }
 
-	public void _on_MoveTimer_timeout()
-	{
+    public void _on_MoveTimer_timeout()
+    {
 
-		walkingTimer.Start();
+        walkingTimer.Start();
 
-		// Get a random direction;
-		this.direction = DirectionExtensions.all[Game.random.Next(0, DirectionExtensions.all.Length)];
-		animationPlayer.CurrentAnimation = "Move";
-		animationPlayer.Play();
+        // Get a random direction;
+        this.direction = DirectionExtensions.all[Game.random.Next(0, DirectionExtensions.all.Length)];
+        animationPlayer.CurrentAnimation = "Move";
+        animationPlayer.Play();
 
-		// Set sprite direction based this.direction
-		this.sprite.FlipH = false;
-		Vector2 directionVector = this.direction.getVector();
-		int offsetY = 0;
-		if (directionVector.x > 0)
-			this.sprite.FlipH = true;
-		if (directionVector.y < 0)
-			offsetY = 1;
-		else if (directionVector.y > 0)
-			offsetY = 2;
-		this.sprite.FrameCoords = new Vector2(0, offsetY);
+        // Set sprite direction based this.direction
+        this.sprite.FlipH = false;
+        Vector2 directionVector = this.direction.getVector();
+        int offsetY = 0;
+        if (directionVector.x > 0)
+            this.sprite.FlipH = true;
+        if (directionVector.y < 0)
+            offsetY = 1;
+        else if (directionVector.y > 0)
+            offsetY = 2;
+        this.sprite.FrameCoords = new Vector2(0, offsetY);
 
-	}
+    }
 
 }

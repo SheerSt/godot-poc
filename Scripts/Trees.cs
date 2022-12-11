@@ -5,7 +5,7 @@ public class Trees : TileMap {
 
     public override void _Ready()
     {
-
+        // This code is for the 'shadows' feature.
         TileMap shadowTileMap = GetNode<TileMap>("/root/Game/Map/Trees");
 
         // For each tile
