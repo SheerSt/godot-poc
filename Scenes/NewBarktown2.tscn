@@ -4,6 +4,8 @@
 [ext_resource path="res://Images/new-bark-town2.png" type="Texture" id=2]
 
 [node name="Map" instance=ExtResource( 1 )]
+material = null
+timeOfDay = 1201
 
 [node name="Background" parent="." index="0"]
 texture = ExtResource( 2 )
