@@ -5,6 +5,7 @@ public class Map : Node2D
 {
     [Export] public int timeOfDay = 0;
     private int prevTimeOfDay = 0;
+    private float timer = 0f;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -15,6 +16,19 @@ public class Map : Node2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(float delta)
     {
+        // This is very laggy. Probably need to do shader.
+        // async didn't fix anything.
+        timer += delta;
+        if (timer < 1f) return;
+
+        timer = 0f;
+        timeOfDay += 4;
+
+        // TODO: might be better to modulate everything using a shader
+        // https://github.com/godotengine/godot/issues/49781
+        // It's possible that this wouldn't work tho because it would modulate any UI elements, for example.
+        //  ^ There's likely a way around that.
+
         if (timeOfDay == prevTimeOfDay) return;
 
         TileMap[] tileMaps = new TileMap[]{
@@ -98,14 +112,6 @@ public class Map : Node2D
                       (nightColor * nightComponent);
         color.a = 1f;  // Re-set alpha so that it's not in the range 0f - 1f.
 
-        GD.Print(color);
-        GD.Print(night2Component);
-        GD.Print(morningComponent);
-        GD.Print(dayComponent);
-        GD.Print(day2Component);
-        GD.Print(eveningComponent);
-        GD.Print(nightComponent);
-
         foreach (TileMap tileMap in tileMaps)
         {
             // Get the tilemap
@@ -121,8 +127,33 @@ public class Map : Node2D
         Sprite background = (Sprite)GetNode("Background");
         background.Modulate = color;
 
+        Sprite playerSprite = (Sprite)GetNode("Trees/Player/Sprite");
+        playerSprite.Modulate = color;
+
+        // Debug: display day/night
+        Sprite dayNightSprite = (Sprite)GetNode("Trees/Player/Camera2D/DayNight");
+        float xPos = 0f;
+        if (timeOfDay < 420)
+        {
+            dayNightSprite.Frame = 1;
+            xPos = ((timeOfDay + 240) % 660) / 660f;
+        }
+        else if (timeOfDay < 1200)
+        {
+            dayNightSprite.Frame = 0;
+            xPos = ((timeOfDay - 420) % 780) / 780f;
+        }
+        else
+        {
+            dayNightSprite.Frame = 1;
+            xPos = ((timeOfDay - 1200) % 660) / 660f;
+        }
+        xPos *= 160;
+        xPos -= 80;
+        dayNightSprite.Position = new Vector2((int)xPos, dayNightSprite.Position.y);
+
         // So that this doesn't get called each frame.
-        timeOfDay = prevTimeOfDay;
+        prevTimeOfDay = timeOfDay;
 
     }
 
