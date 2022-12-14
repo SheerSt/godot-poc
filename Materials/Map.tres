@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "// https://www.reddit.com/r/godot/comments/n8vxw3/comment/gxl9kdh/?utm_source=share&utm_medium=web2x&context=3
+// https://godotshaders.com/shader/modulate-before-light/
+// TODO: maybe delete, Map.Modulate ended up working
+// couldn't this to work:
+// (Material as ShaderMaterial).SetShaderParam(\"color_tint\", colorTint);  <-- in _Ready()
+
+shader_type canvas_item;
+render_mode blend_mix;
+
+uniform vec4 color_tint; 
+
+void fragment() {
+	vec4 texture_color = texture(TEXTURE, UV);
+	if (AT_LIGHT_PASS) {
+		COLOR = texture_color;
+	} else {
+		COLOR = texture_color * color_tint;
+	}
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/color_tint = Plane( 1, 1, 1, 1 )

@@ -51,6 +51,10 @@ texture={
 "svg/scale": 1.0
 }
 
+[mono]
+
+project/assembly_name="wilds-godot-test1"
+
 [physics]
 
 common/enable_pause_aware_picking=true

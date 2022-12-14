@@ -8,11 +8,12 @@ public class Map : Node2D
     private float timer = 0f;
 
     public Color colorTint = new Color();
+    Node2D sunLight;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        
+        sunLight = GetNode<Node2D>("Sun");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -130,13 +131,27 @@ public class Map : Node2D
             dayNightSprite.Frame = 1;
             xPos = ((timeOfDay - 1200) % 660) / 660f;
         }
+
+        double yPos = Math.Cos(xPos * Math.PI * 2) + 1;
+        yPos *= 10;
+
         // Goes right-to-left
         xPos *= 160;
         xPos -= 80;
-        dayNightSprite.Position = new Vector2(-(int)xPos, dayNightSprite.Position.y);
+        dayNightSprite.Position = new Vector2(-(int)xPos, -50 + (float)yPos);
 
         // So that this doesn't get called each frame.
         prevTimeOfDay = timeOfDay;
+
+        // Update shadows based on time of day.
+        Trees trees = (Trees)GetNode("Trees");
+        trees.UpdateShadows(timeOfDay);
+
+        //Adjust sun light.
+        float percentThroughDay = ((timeOfDay + 1100) % 1440) / 1440f;
+        xPos = (float)Math.Cos(percentThroughDay * Math.PI * 2);
+        yPos = -(float)Math.Sin(percentThroughDay * Math.PI * 2);
+        sunLight.GlobalPosition = new Vector2(400 * xPos, 400 * (float)yPos);
 
     }
 
