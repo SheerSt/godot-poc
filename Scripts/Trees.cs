@@ -55,7 +55,7 @@ public partial class Trees : TileMap {
         }
     }
 
-    public void UpdateShadows(int timeOfDay)
+    public void UpdateShadows(int timeOfDay, Color modulate)
     {
         // The 1400 is arbitrary to sync it, idk why it's not synced by default.
         float percentThroughDay = (timeOfDay + 1400 % 720) / 720f;
@@ -63,8 +63,9 @@ public partial class Trees : TileMap {
         // Used by light angle shader.
         TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(1);
         TileData tileData = atlasSource.GetTileData(new Vector2i(0, 0), 0);
-        light_angle = percentThroughDay * (float)Math.PI * 2.0f;
+        light_angle = (((timeOfDay + 1080) % 1440) / 1440f) * (float)Math.PI * 2.0f;
         (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
+        (tileData.Material as ShaderMaterial).SetShaderParameter("modulate", modulate);
         //GD.Print(light_angle);
 
         // Not sure why this +5 is needed. if maxY changes, the 5 needs to change

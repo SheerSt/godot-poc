@@ -15,6 +15,8 @@ shader_type canvas_item;
 
 //global uniform float light_angle;
 uniform float light_angle = 45.0;
+// TODO: MODULATE var is gone, so using this as shader param for now.
+uniform vec3 modulate = vec3(1.0);
 
 uniform vec3 bias = vec3(1.0, 0.5, 1.0); // Hue, Saturation (Saturation * Value), and Lightness (From LAB)
 
@@ -125,7 +127,8 @@ void fragment() {
     }
 
 	//COLOR.rgb = c;
-    COLOR.rgb = vec3(color_palette[index_of_closest].rgb);
+	
+    COLOR.rgb = vec3(color_palette[index_of_closest].rgb) * modulate;
 }
 "
 
@@ -133,4 +136,5 @@ void fragment() {
 shader = SubResource("2")
 shader_parameter/bias = Vector3(1, 0.5, 1)
 shader_parameter/light_angle = 47.101
+shader_parameter/modulate = null
 shader_parameter/palette_texture = ExtResource("1_vnmrc")
