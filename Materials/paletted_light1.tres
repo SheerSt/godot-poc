@@ -12,6 +12,8 @@ code = "// credit to u/MartialArtTetherball
 
 shader_type canvas_item;
 
+uniform float light_angle = 45.0;
+
 uniform vec3 bias = vec3(1.0, 0.25, 1.5); // Hue, Saturation (Saturation * Value), and Lightness (From LAB)
 
 uniform sampler2D palette_texture;
@@ -73,7 +75,7 @@ float find_weighted_distance(vec4 color_a, vec3 color_b) {
 
     return distance_with_hue_consideration(
         col1 * bias,
-        col2 * bias
+        col2 * bias 
     );
 }
 
@@ -81,19 +83,36 @@ void vertex() {
     palette_size = float(textureSize(palette_texture, 0).y);
 
     vec3 c;
-    for (int i = 0; i < int(palette_size); ++i) {
-        c = texelFetch(palette_texture, ivec2(0, i), 2).rgb;
+    for (int i = 0; i < int(palette_size); i++) {
+        c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
         // pack colors from palette texture, and pre-calculate their lightnesses
         color_palette[i] = vec4(c, rgb2lightness(c));
+		//color_palette[i] = vec4(c, 1.0);
     }
 }
 
 void fragment() {
     COLOR = texture(TEXTURE, UV);
+	
+	// Calculate basic output color after normal
+	
+	//vec3 norm = normalize(Normal);
+	//vec3 lightDir = normalize(lightPos - FragPos);  
+	//float diff = max(dot(norm, lightDir), 0.0);
+	//vec3 diffuse = diff * lightColor;
+	//vec3 result = (ambient + diffuse) * objectColor;
+	//FragColor = vec4(result, 1.0);
+
+	//vec3 lightDir = normalize(light_pos - vec3(UV, 0.0));
+	vec3 lightDir = vec3(cos(light_angle), sin(light_angle), .8);
+	float diff = max(dot(NORMAL, lightDir), 0.0);
+	vec3 light_color = vec3(1.0);
+	vec3 diffuse = diff * light_color;
+	float ambient = 1.0;
+	vec3 c = (vec3(ambient) + diffuse) * COLOR.rgb;
 
     int index_of_closest;
     float distance_to_closest = 10000.0;
-    vec3 c = COLOR.rgb;
 
     for (int i = 0; i < int(palette_size); i++) {
         float d = find_weighted_distance(color_palette[i], c);
@@ -103,11 +122,13 @@ void fragment() {
         }
     }
 
-    COLOR.rgb = color_palette[index_of_closest].rgb;
+	//COLOR.rgb = c;
+    COLOR.rgb = vec3(color_palette[index_of_closest].rgb);
 }
 "
 
 [resource]
 shader = SubResource("2")
 shader_parameter/bias = Vector3(1, 0.25, 1.5)
+shader_parameter/light_angle = 60.491
 shader_parameter/palette_texture = ExtResource("1_b6le6")
