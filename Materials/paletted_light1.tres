@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cr3j4k4iinj7o"]
 
-[ext_resource type="Texture2D" uid="uid://cgm65g428v5dx" path="res://Tiles/tree1.palette.png" id="1_b6le6"]
+[ext_resource type="Texture2D" uid="uid://cgm65g428v5dx" path="res://Tiles/tree1.palette.png" id="1_vnmrc"]
 
 [sub_resource type="Shader" id="2"]
 code = "// credit to u/MartialArtTetherball
@@ -10,11 +10,13 @@ code = "// credit to u/MartialArtTetherball
 // NOTE: if put in a viewport container, light blending doeesn't happen and the palette is applied.
 // Can palette the entire screen that way
 
+
 shader_type canvas_item;
 
+//global uniform float light_angle;
 uniform float light_angle = 45.0;
 
-uniform vec3 bias = vec3(1.0, 0.25, 1.5); // Hue, Saturation (Saturation * Value), and Lightness (From LAB)
+uniform vec3 bias = vec3(1.0, 0.5, 1.0); // Hue, Saturation (Saturation * Value), and Lightness (From LAB)
 
 uniform sampler2D palette_texture;
 varying flat float palette_size;
@@ -129,6 +131,6 @@ void fragment() {
 
 [resource]
 shader = SubResource("2")
-shader_parameter/bias = Vector3(1, 0.25, 1.5)
-shader_parameter/light_angle = 60.491
-shader_parameter/palette_texture = ExtResource("1_b6le6")
+shader_parameter/bias = Vector3(1, 0.5, 1)
+shader_parameter/light_angle = 47.101
+shader_parameter/palette_texture = ExtResource("1_vnmrc")

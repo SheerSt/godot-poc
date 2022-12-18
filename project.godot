@@ -71,6 +71,13 @@ textures/canvas_textures/default_texture_filter=0
 2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"
 
+[shader_globals]
+
+light_angle={
+"type": "float",
+"value": 0.0
+}
+
 [tiled_importer]
 
 enable_json_format=true

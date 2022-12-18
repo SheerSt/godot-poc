@@ -5,6 +5,10 @@ public partial class Trees : TileMap {
 
     Node2D shadows;
 
+    // Bind to shaders. 
+    // TODO: once shader globals work, use those (?).
+    public float light_angle;
+
     public override void _Ready()
     {
         shadows = GetNode<Node2D>("Shadows");
@@ -13,12 +17,20 @@ public partial class Trees : TileMap {
 
     public void Init()
     {
+
         // For each tile
         int layer = 0;
         foreach (Vector2i position in GetUsedCells(layer))
         {
             // Make a new Sprite2D that copies the tile texture
             TileData tileData = GetCellTileData(layer, position);
+
+            //GD.Print(((ShaderMaterial)tileData.Material).GetShaderParameter("light_angle"));
+            // Set shader parameter for light angle.
+            if (tileData.Material != null)
+            {
+                (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
+            }
 
             TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(layer);
             Texture2D texture = atlasSource.Texture;
@@ -47,6 +59,13 @@ public partial class Trees : TileMap {
     {
         // The 1400 is arbitrary to sync it, idk why it's not synced by default.
         float percentThroughDay = (timeOfDay + 1400 % 720) / 720f;
+
+        // Used by light angle shader.
+        TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(1);
+        TileData tileData = atlasSource.GetTileData(new Vector2i(0, 0), 0);
+        light_angle = percentThroughDay * (float)Math.PI * 2.0f;
+        (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
+        //GD.Print(light_angle);
 
         // Not sure why this +5 is needed. if maxY changes, the 5 needs to change
         float xPercent = (float)Math.Sin(percentThroughDay * Math.PI * 2);
