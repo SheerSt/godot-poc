@@ -1,7 +1,9 @@
-[gd_resource type="TileSet" load_steps=20 format=3 uid="uid://cn7g02b2jkhcu"]
+[gd_resource type="TileSet" load_steps=24 format=3 uid="uid://cn7g02b2jkhcu"]
 
 [ext_resource type="Texture2D" uid="uid://ddsms7bd3f446" path="res://Tiles/tileset1.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://d3p2fnsir27wi" path="res://Tiles/tileset1-normal.png" id="2_op1jh"]
 [ext_resource type="Material" uid="uid://cr3j4k4iinj7o" path="res://Materials/paletted_light1.tres" id="3"]
+[ext_resource type="Shader" path="res://Scenes/NewBarktown2.gdshader" id="3_fksex"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_558cl"]
 texture = ExtResource("1")
@@ -60,63 +62,24 @@ texture_region_size = Vector2i(16, 32)
 0:0/7/physics_layer_0/polygon_0/points = PackedVector2Array(0, 5.4936, 16, 5.0091, 16, 16, 0, 16)
 0:0/7/physics_layer_0/polygon_1/points = PackedVector2Array(0, -16, 16, -16, 16, 16, 0, 16)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_675to"]
+render_priority = 0
+next_pass = ExtResource("3")
+shader = ExtResource("3_fksex")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_cn3yk"]
+diffuse_texture = ExtResource("1")
+normal_texture = ExtResource("2_op1jh")
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jpkhs"]
-texture = ExtResource("1")
+texture = SubResource("CanvasTexture_cn3yk")
 margins = Vector2i(16, 0)
 texture_region_size = Vector2i(16, 32)
-0:0/next_alternative_id = 8
+use_texture_padding = false
 0:0/0 = 0
-0:0/0/material = ExtResource("3")
+0:0/0/material = SubResource("ShaderMaterial_675to")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/1 = 1
-0:0/1/flip_h = true
-0:0/1/material = ExtResource("3")
-0:0/1/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/1/physics_layer_0/angular_velocity = 0.0
-0:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/2 = 2
-0:0/2/flip_v = true
-0:0/2/material = ExtResource("3")
-0:0/2/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/2/physics_layer_0/angular_velocity = 0.0
-0:0/2/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/3 = 3
-0:0/3/flip_h = true
-0:0/3/flip_v = true
-0:0/3/material = ExtResource("3")
-0:0/3/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/3/physics_layer_0/angular_velocity = 0.0
-0:0/3/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/4 = 4
-0:0/4/transpose = true
-0:0/4/material = ExtResource("3")
-0:0/4/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/4/physics_layer_0/angular_velocity = 0.0
-0:0/4/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/5 = 5
-0:0/5/flip_h = true
-0:0/5/transpose = true
-0:0/5/material = ExtResource("3")
-0:0/5/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/5/physics_layer_0/angular_velocity = 0.0
-0:0/5/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/6 = 6
-0:0/6/flip_v = true
-0:0/6/transpose = true
-0:0/6/material = ExtResource("3")
-0:0/6/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/6/physics_layer_0/angular_velocity = 0.0
-0:0/6/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
-0:0/7 = 7
-0:0/7/flip_h = true
-0:0/7/flip_v = true
-0:0/7/transpose = true
-0:0/7/material = ExtResource("3")
-0:0/7/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/7/physics_layer_0/angular_velocity = 0.0
-0:0/7/physics_layer_0/polygon_0/points = PackedVector2Array(16, 16, 0, 16, 0, 5.0091, 16, 5.3321)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_txhh8"]
 texture = ExtResource("1")
