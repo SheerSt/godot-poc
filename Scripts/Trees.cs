@@ -66,6 +66,12 @@ public partial class Trees : TileMap {
         light_angle = (((timeOfDay + 1080) % 1440) / 1440f) * (float)Math.PI * 2.0f;
         (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
         (tileData.Material as ShaderMaterial).SetShaderParameter("modulate", modulate);
+
+        float lightFade = (((timeOfDay + 1080) % 1440) / 1440f);
+        lightFade = (float)Math.Sin(lightFade * Math.PI * 2) + 1f;
+        lightFade = Math.Min((lightFade), 1.0f);
+        lightFade = Math.Max(lightFade, .3f);
+        (tileData.Material as ShaderMaterial).SetShaderParameter("light_color", new Vector3(1f, 1f, 1f) * lightFade);
         //GD.Print(light_angle);
 
         // Not sure why this +5 is needed. if maxY changes, the 5 needs to change
