@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/GrassOverlay.cs" type="Script" id=1]
-[ext_resource path="res://Images/red1-grassoverlay1.png" type="Texture" id=2]
+[ext_resource path="res://Images/red1-grassoverlay1.png" type="Texture2D" id=2]
 
-[node name="GrassOverlay" type="Sprite"]
+[node name="GrassOverlay" type="Sprite2D"]
 position = Vector2( 0, 4 )
 texture = ExtResource( 2 )
 hframes = 6

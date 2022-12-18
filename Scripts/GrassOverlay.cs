@@ -1,21 +1,21 @@
 using Godot;
 using System;
 
-public class GrassOverlay : Sprite
+public partial class GrassOverlay : Sprite2D
 {
 
     Player player;
-    Sprite playerSprite;
+    Sprite2D playerSprite;
     int prevFrame;
-    float timer = 0f;
+    double timer = 0f;
 
     public override void _Ready()
     {
         player = (Player)GetParent();
-        playerSprite = (Sprite)player.FindNode("Sprite");
+        playerSprite = (Sprite2D)player.FindChild("Sprite2D");
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
 
         if (player.yOffset < 3)
@@ -50,10 +50,10 @@ public class GrassOverlay : Sprite
         // Align to Player sprite.
         Position = playerSprite.Position;
 
-        // Copy the player Sprite's frame number.
+        // Copy the player Sprite2D's frame number.
         Frame = playerSprite.Frame;
 
-        // Copy the player Sprite's horizontal flip.
+        // Copy the player Sprite2D's horizontal flip.
         FlipH = playerSprite.FlipH;
 
     }

@@ -1,6 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bpf1pd3usvtux"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "// https://www.reddit.com/r/godot/comments/n8vxw3/comment/gxl9kdh/?utm_source=share&utm_medium=web2x&context=3
 // https://godotshaders.com/shader/modulate-before-light/
 // TODO: maybe delete, Map.Modulate ended up working
@@ -22,5 +22,5 @@ void fragment() {
 }"
 
 [resource]
-shader = SubResource( 1 )
-shader_param/color_tint = Plane( 1, 1, 1, 1 )
+shader = SubResource("1")
+shader_parameter/color_tint = Plane(1, 1, 1, 1)

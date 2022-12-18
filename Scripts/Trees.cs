@@ -1,28 +1,31 @@
 using Godot;
 using System;
 
-public class Trees : TileMap {
+public partial class Trees : TileMap {
 
-    YSort shadows;
+    Node2D shadows;
 
     public override void _Ready()
     {
-        shadows = GetNode<YSort>("Shadows");
+        shadows = GetNode<Node2D>("Shadows");
         Init();
     }
 
     public void Init()
     {
         // For each tile
-        foreach (Vector2 position in GetUsedCells())
+        int layer = 0;
+        foreach (Vector2i position in GetUsedCells(layer))
         {
-            // Make a new Sprite that copies the tile texture
-            int tileId = GetCellv(position);
-            Texture texture = this.TileSet.TileGetTexture(tileId);
+            // Make a new Sprite2D that copies the tile texture
+            TileData tileData = GetCellTileData(layer, position);
+
+            TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(layer);
+            Texture2D texture = atlasSource.Texture;
 
             Shadow polygon2D = new Shadow();
-            Rect2 regionRect = polygon2D.regionRect = this.TileSet.TileGetRegion(tileId);
-            polygon2D.originalPosition = MapToWorld(position);
+            Rect2 regionRect = polygon2D.regionRect = atlasSource.GetTileTextureRegion(position);
+            polygon2D.originalPosition = MapToLocal(position);
             polygon2D.Texture = texture;
             //
             Vector2[] uv = new Vector2[4];
@@ -32,7 +35,7 @@ public class Trees : TileMap {
             uv[3] = new Vector2(regionRect.Position.x, regionRect.End.y);
             polygon2D.Uv = uv;
 
-            polygon2D.tileOffset = TileSet.TileGetTextureOffset(tileId);
+            polygon2D.tileOffset = tileData.TextureOffset;
             polygon2D.tileOffset += new Vector2(3, 0);  // Looks good visually.
 
             // Add the sprite as a child to Shadows TileMap

@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/walk1.ogg-460a0722ce9bc0e8e4b407e95e7dd481.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://eemepnm8ag66"
+path="res://.godot/imported/walk1.ogg-460a0722ce9bc0e8e4b407e95e7dd481.oggvorbisstr"
 
 [deps]
 
 source_file="res://Sounds/walk1.ogg"
-dest_files=[ "res://.import/walk1.ogg-460a0722ce9bc0e8e4b407e95e7dd481.oggstr" ]
+dest_files=["res://.godot/imported/walk1.ogg-460a0722ce9bc0e8e4b407e95e7dd481.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

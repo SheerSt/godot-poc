@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/HGSS_NewBarkTown-stitched.ogg-e1168038b24ed90e1fa37eb6663ccf90.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bomspwey6auaq"
+path="res://.godot/imported/HGSS_NewBarkTown-stitched.ogg-e1168038b24ed90e1fa37eb6663ccf90.oggvorbisstr"
 
 [deps]
 
 source_file="res://Music/HGSS_NewBarkTown-stitched.ogg"
-dest_files=[ "res://.import/HGSS_NewBarkTown-stitched.ogg-e1168038b24ed90e1fa37eb6663ccf90.oggstr" ]
+dest_files=["res://.godot/imported/HGSS_NewBarkTown-stitched.ogg-e1168038b24ed90e1fa37eb6663ccf90.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

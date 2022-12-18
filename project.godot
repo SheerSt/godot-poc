@@ -6,12 +6,13 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
+config_version=5
 
 [application]
 
 config/name="wilds-godot-test1"
 run/main_scene="res://Scenes/Game.tscn"
+config/features=PackedStringArray("4.0", "C#")
 config/icon="res://icon.png"
 
 [debug]
@@ -20,12 +21,17 @@ settings/fps/force_fps=60
 
 [display]
 
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+window/stretch/scale=3.0
 window/size/width=256
 window/size/height=144
 window/size/test_width=768
 window/size/test_height=432
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+
+[dotnet]
+
+project/assembly_name="wilds-godot-test1"
 
 [importer_defaults]
 
@@ -61,6 +67,7 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"
 

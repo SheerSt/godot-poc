@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Diglett : Monster
+public partial class Diglett : Monster
 {
 
     Timer dirtTimer;
@@ -12,12 +12,12 @@ public class Diglett : Monster
     {
 
         base._Ready();
-        dirtTimer = (Timer)FindNode("DirtTimer");
-        dirtSound = (AudioStreamPlayer2D)FindNode("DirtSound");
+        dirtTimer = (Timer)FindChild("DirtTimer");
+        dirtSound = (AudioStreamPlayer2D)FindChild("DirtSound");
 
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
 
         base._Process(delta);
@@ -31,26 +31,26 @@ public class Diglett : Monster
 
         //
         PackedScene footPrints = GD.Load<PackedScene>("res://Monsters/Dirt-Trail.tscn");
-        Node node = footPrints.Instance();
-        //Sprite sprite = (Sprite)node.FindNode("Sprite");
+        Node node = footPrints.Instantiate();
+        //Sprite2D sprite = (Sprite2D)node.FindNode("Sprite2D");
         //sprite.Position = Position.Floor() + new Vector2(0, 2);  // y = 8 - yOffset
         ((Node2D)node).Position = Position.Floor() + new Vector2(0, -5);
-        AnimationPlayer animationPlayer = (AnimationPlayer)node.FindNode("AnimationPlayer");
+        AnimationPlayer animationPlayer = (AnimationPlayer)node.FindChild("AnimationPlayer");
         animationPlayer.CurrentAnimation = "footprints-fade-sand";
         animationPlayer.Play();
 
         //
-        Node2D map = (Node2D)Game.instance.FindNode("Map");
-        TileMap tileMap = (TileMap)map.FindNode("Trees");
+        Node2D map = (Node2D)Game.instance.FindChild("Map");
+        TileMap tileMap = (TileMap)map.FindChild("Trees");
         tileMap.AddChild(node);  // BelowNode(tileMap, 
 
 
         //
         PackedScene dirt = GD.Load<PackedScene>("res://Monsters/debris1.tscn");
-        node = dirt.Instance();
+        node = dirt.Instantiate();
         //((Node2D)node).Position = Position.Floor() + new Vector2(0, 16);  // y = 8 - yOffset
         ((Node2D)node).Position = new Vector2(0, 4);
-        animationPlayer = (AnimationPlayer)node.FindNode("AnimationPlayer");
+        animationPlayer = (AnimationPlayer)node.FindChild("AnimationPlayer");
         animationPlayer.CurrentAnimation = "Anim1";
         animationPlayer.Play();
         //tileMap = (TileMap)map.FindNode("Trees");

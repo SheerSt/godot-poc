@@ -1,10 +1,10 @@
 using Godot;
 using System;
 
-public class Light2D : Godot.Light2D
+public partial class PointLight2D : Godot.PointLight2D
 {
 
-    float timer = 0f;
+    double timer = 0f;
     int region = 0;
 
     public override void _Ready()
@@ -12,7 +12,7 @@ public class Light2D : Godot.Light2D
         (Texture as AtlasTexture).Region = new Rect2(0, 0, 16, 16);
     }
 
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
         timer += delta;
 
@@ -23,7 +23,7 @@ public class Light2D : Godot.Light2D
             timer -= 1f;
             region = (region + 1) % 2;
             (Texture as AtlasTexture).Region = new Rect2(region * 16, 0, 16, 16);
-            //GD.Print((Texture as AtlasTexture).Region);
+            //GD.Print((Texture2D as AtlasTexture).Region);
 
         }
 

@@ -2,12 +2,12 @@ using ExtensionMethods;
 using Godot;
 using System;
 
-public class Monster : KinematicBody2D
+public partial class Monster : CharacterBody2D
 {
 
     public Direction direction = Direction.NONE;
     public float speed = 1f;
-    public Sprite sprite;
+    public Sprite2D sprite;
     public AnimationPlayer animationPlayer;
     public Timer moveTimer;
     public Timer walkingTimer;
@@ -15,20 +15,21 @@ public class Monster : KinematicBody2D
     public override void _Ready()
     {
         
-        moveTimer = (Timer)FindNode("MoveTimer");
-        walkingTimer = (Timer)FindNode("WalkingTimer");
-        sprite = (Sprite)FindNode("Sprite");
-        animationPlayer = (AnimationPlayer)FindNode("AnimationPlayer");
+        moveTimer = (Timer)FindChild("MoveTimer");
+        walkingTimer = (Timer)FindChild("WalkingTimer");
+        sprite = (Sprite2D)FindChild("Sprite2D");
+        animationPlayer = (AnimationPlayer)FindChild("AnimationPlayer");
 
     }
     
-    public override void _Process(float delta)
+    public override void _Process(double delta)
     {
 
         if (!this.walkingTimer.IsStopped())
         {
 
-            Vector2 moveAmount = MoveAndSlide(this.direction.getVector().Normalized() * this.speed * 36);
+            Velocity = this.direction.getVector().Normalized() * this.speed * 36;
+            MoveAndSlide();
 
             // Snap the sprite's position to whole numbers, otherwise it looks weird.
             // There's likely a better way to do this.
@@ -45,7 +46,6 @@ public class Monster : KinematicBody2D
 
     public void _on_MoveTimer_timeout()
     {
-
         walkingTimer.Start();
 
         // Get a random direction;
@@ -63,7 +63,7 @@ public class Monster : KinematicBody2D
             offsetY = 1;
         else if (directionVector.y > 0)
             offsetY = 2;
-        this.sprite.FrameCoords = new Vector2(0, offsetY);
+        this.sprite.FrameCoords = new Vector2i(0, offsetY);
 
     }
 
