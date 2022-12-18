@@ -1,4 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cr3j4k4iinj7o"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cr3j4k4iinj7o"]
+
+[ext_resource type="Texture2D" uid="uid://cgm65g428v5dx" path="res://Tiles/tree1.palette.png" id="1_b6le6"]
 
 [sub_resource type="Shader" id="2"]
 code = "// credit to u/MartialArtTetherball
@@ -9,8 +11,6 @@ code = "// credit to u/MartialArtTetherball
 // Can palette the entire screen that way
 
 shader_type canvas_item;
-//render_mode light_only;  //blend_disabled, 
-render_mode blend_disabled;
 
 uniform vec3 bias = vec3(1.0, 0.25, 1.5); // Hue, Saturation (Saturation * Value), and Lightness (From LAB)
 
@@ -49,17 +49,6 @@ float rgb2lightness(vec3 c) { // adapted from lab color space equations
     return ((116.*v.y)-16.)/100.0;
 }
 
-void vertex() {
-    palette_size = float(textureSize(palette_texture, 0).y);
-
-    vec3 c;
-    for (int i = 0; i < int(palette_size); ++i) {
-        c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
-        // pack colors from palette texture, and pre-calculate their lightnesses
-        color_palette[i] = vec4(c, rgb2lightness(c));
-    }
-}
-
 float square_magnitude(vec3 color) {
     return pow(color.x, 2) + pow(color.y, 2) + pow(color.z, 2);
 }
@@ -88,8 +77,18 @@ float find_weighted_distance(vec4 color_a, vec3 color_b) {
     );
 }
 
-void fragment() {
+void vertex() {
+    palette_size = float(textureSize(palette_texture, 0).y);
 
+    vec3 c;
+    for (int i = 0; i < int(palette_size); ++i) {
+        c = texelFetch(palette_texture, ivec2(0, i), 2).rgb;
+        // pack colors from palette texture, and pre-calculate their lightnesses
+        color_palette[i] = vec4(c, rgb2lightness(c));
+    }
+}
+
+void fragment() {
     COLOR = texture(TEXTURE, UV);
 
     int index_of_closest;
@@ -105,27 +104,10 @@ void fragment() {
     }
 
     COLOR.rgb = color_palette[index_of_closest].rgb;
-    
 }
-
-void light() {
-
-    if (LIGHT_COLOR.a <= .6f) {  // This check is confirmed working.
-        //LIGHT_COLOR = vec4(2f, 2f, 2f, 3f);
-        //LIGHT_COLOR = vec4(COLOR.r * 2f, COLOR.g * 2f, COLOR.b * 2f, 3f);
-        LIGHT_COLOR = vec4(3f, 3f, 3f, 3f);
-        //MODULATE = vec4(1f, 1f, 1f, 1f);
-        //LIGHT_HEIGHT = .000001f;
-        //LIGHT_HEIGHT = 1000000f;
-        LIGHT_VEC = vec2(0f, 0f);
-        LIGHT = vec4(COLOR.r, COLOR.g, COLOR.b, 1f);
-        //LIGHT = vec4(1f, 1f, 1f, 1f);
-        //LIGHT = vec4(0f, 0f, 0f, 0f);
-        //LIGHT_COLOR = vec4(1, 0, 0, 1);
-    }
-}
-
 "
 
 [resource]
 shader = SubResource("2")
+shader_parameter/bias = Vector3(1, 0.25, 1.5)
+shader_parameter/palette_texture = ExtResource("1_b6le6")

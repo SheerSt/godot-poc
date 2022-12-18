@@ -28,6 +28,6 @@ position = Vector2(65, -71)
 color = Color(1, 1, 1, 0)
 texture = SubResource("1")
 
-[node name="Sun" parent="." index="7"]
-position = Vector2(137, -116)
+[node name="Sun" parent="." index="6"]
+position = Vector2(216, -102)
 height = 100.0
