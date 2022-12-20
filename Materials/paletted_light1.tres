@@ -99,7 +99,8 @@ void vertex() {
 	float x_offset = sin(TIME * 1.0 + xy_offset);
 	x_offset *= x_offset - 1.0;  // makes -x sway less that +x sway.
 	x_offset *= (.06 - UV.y);   // no idea why 1.0 doesn't work here. Makes sway start at tile base.
-	x_offset *= 20.0;
+	// x_offset *= 20.0;  // Looked good
+	 x_offset *= 10.0;
 	VERTEX.x += x_offset;
 	//
 	
@@ -118,13 +119,27 @@ void fragment() {
 	
 	// 'Wind' shader done by me.
 	vec2 altUV = UV;
-	float scale = 40.0;
 	float xy_offset = SCREEN_UV.x*1.0 - SCREEN_UV.y*1.0;
 	// float y_offset = max(sin(TIME * 1.0 + xy_offset + 2.0), .5);
-	float y_offset = max(sin(TIME * 2.0 + xy_offset), .5);
 	// float y_offset = sin(TIME * 1.0 + xy_offset + 2.0);
-	y_offset *= (NORMAL.z);  // somewhat arbitrary  // (NORMAL.y) * 
-	y_offset *= .002;
+	float y_offset = max(sin(TIME * 2.0 + xy_offset), .5);
+	y_offset -= .5;
+	y_offset *= (NORMAL.z);  // somewhat arbitrary
+	y_offset *= .0005;
+	
+	/* prev effect
+	float scale = 40.0;
+	vec2 world_pos = SCREEN_UV - UV;  // Makes it go up in horizontal lines
+	//world_pos.x = UV.x;  // Avoid diagonal.
+	float xy_offset = -world_pos.x*scale + world_pos.y*scale;
+	float y_offset = max(sin(TIME * 4.0 + xy_offset), .85);
+	y_offset -= .85;
+	if (y_offset > 0.0) y_offset = .15;
+	y_offset *= sin(TIME * 1.0 + xy_offset);
+	y_offset *= (NORMAL.z * NORMAL.y * NORMAL.x);  // somewhat arbitrary
+	y_offset *= .02;
+	y_offset *= abs(.5 - UV.x) * 2.0;  // Avoid the middle of the texture.
+	*/
 	altUV.y += y_offset;
 	//
 	

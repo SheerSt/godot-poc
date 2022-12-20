@@ -4,6 +4,7 @@ using System;
 public partial class Map : Node2D
 {
 	[Export] public int timeOfDay = 0;
+	private double doubleTimeOfDay = 440f;
 	private int prevTimeOfDay = 0;
 	private float timer = 0f;
 
@@ -25,7 +26,8 @@ public partial class Map : Node2D
 
 		//        timer = 0f;
 		//        timeOfDay += 4;
-		++timeOfDay;
+		doubleTimeOfDay += delta * 20.0;
+		timeOfDay = (int)doubleTimeOfDay;
 
 		if (timeOfDay == prevTimeOfDay) return;
 

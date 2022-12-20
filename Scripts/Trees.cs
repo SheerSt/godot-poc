@@ -48,6 +48,8 @@ public partial class Trees : TileMap {
 
     public void UpdateShadows(int timeOfDay, Color modulate)
     {
+
+
         // The 1400 is arbitrary to sync it, idk why it's not synced by default.
         float percentThroughDay = (timeOfDay + 1400 % 720) / 720f;
 
@@ -67,6 +69,10 @@ public partial class Trees : TileMap {
         // Not sure why this +5 is needed. if maxY changes, the 5 needs to change
         float xPercent = (float)Math.Sin(percentThroughDay * Math.PI * 2);
         float yPercent = (float)Math.Cos(percentThroughDay * Math.PI * 2) + 5;
+
+
+        // TODO: Debug, remove
+        return;
 
         // For each tile
         foreach (Shadow polygon2D in shadows.GetChildren())
