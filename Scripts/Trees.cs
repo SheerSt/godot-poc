@@ -5,10 +5,6 @@ public partial class Trees : TileMap {
 
     Node2D shadows;
 
-    // Bind to shaders. 
-    // TODO: once shader globals work, use those (?).
-    public float light_angle;
-
     public override void _Ready()
     {
         shadows = GetNode<Node2D>("Shadows");
@@ -24,21 +20,16 @@ public partial class Trees : TileMap {
         {
             // Make a new Sprite2D that copies the tile texture
             TileData tileData = GetCellTileData(layer, position);
+            int tileId = GetCellSourceId(layer, position);
 
-            //GD.Print(((ShaderMaterial)tileData.Material).GetShaderParameter("light_angle"));
-            // Set shader parameter for light angle.
-            if (tileData.Material != null)
-            {
-                (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
-            }
-
-            TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(layer);
-            Texture2D texture = atlasSource.Texture;
+            TileSetAtlasSource atlasSource = (TileSetAtlasSource)TileSet.GetSource(tileId);
 
             Shadow polygon2D = new Shadow();
-            Rect2 regionRect = polygon2D.regionRect = atlasSource.GetTileTextureRegion(position);
+            // TODO: tile atlas is likely set up wrong, every unique tile id is at position 0,0 and
+            // is in a different atlas.
+            Rect2 regionRect = polygon2D.regionRect = atlasSource.GetTileTextureRegion(new Vector2i(0 ,0));
             polygon2D.originalPosition = MapToLocal(position);
-            polygon2D.Texture = texture;
+            polygon2D.Texture = atlasSource.Texture;
             //
             Vector2[] uv = new Vector2[4];
             uv[0] = regionRect.Position;
@@ -47,7 +38,7 @@ public partial class Trees : TileMap {
             uv[3] = new Vector2(regionRect.Position.x, regionRect.End.y);
             polygon2D.Uv = uv;
 
-            polygon2D.tileOffset = tileData.TextureOffset;
+            polygon2D.tileOffset = tileData.TextureOffset;  // TODO: is this used?
             polygon2D.tileOffset += new Vector2(3, 0);  // Looks good visually.
 
             // Add the sprite as a child to Shadows TileMap
@@ -63,7 +54,7 @@ public partial class Trees : TileMap {
         // Used by light angle shader.
         TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(1);
         TileData tileData = atlasSource.GetTileData(new Vector2i(0, 0), 0);
-        light_angle = (((timeOfDay + 1080) % 1440) / 1440f) * (float)Math.PI * 2.0f;
+        float light_angle = (((timeOfDay + 1080) % 1440) / 1440f) * (float)Math.PI * 2.0f;
         (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
         (tileData.Material as ShaderMaterial).SetShaderParameter("modulate", modulate);
 
@@ -72,7 +63,6 @@ public partial class Trees : TileMap {
         lightFade = Math.Min((lightFade), 1.0f);
         lightFade = Math.Max(lightFade, .3f);
         (tileData.Material as ShaderMaterial).SetShaderParameter("light_color", new Vector3(1f, 1f, 1f) * lightFade);
-        //GD.Print(light_angle);
 
         // Not sure why this +5 is needed. if maxY changes, the 5 needs to change
         float xPercent = (float)Math.Sin(percentThroughDay * Math.PI * 2);
