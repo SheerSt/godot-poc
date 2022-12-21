@@ -21,7 +21,7 @@ settings/fps/force_fps=60
 
 [display]
 
-window/stretch/scale=5.0
+window/stretch/scale=4.0
 
 [dotnet]
 

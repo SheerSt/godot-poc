@@ -26,7 +26,7 @@ public partial class Map : Node2D
 
 		//        timer = 0f;
 		//        timeOfDay += 4;
-		doubleTimeOfDay += delta * 20.0;
+		doubleTimeOfDay += delta * 10.0;
 		timeOfDay = (int)doubleTimeOfDay;
 
 		if (timeOfDay == prevTimeOfDay) return;
