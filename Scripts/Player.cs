@@ -111,7 +111,7 @@ public partial class Player : CharacterBody2D
 
 			offsetY = bumps[xPos][yPos];
 			this.sprite.Position = new Vector2(0,  -2 - offsetY);
-			this.collisionShape2D.Position = new Vector2(0, -10 - offsetY); ;
+			this.collisionShape2D.Position = new Vector2(0, 3 - offsetY); ;
 
 		}
 		return offsetY;
