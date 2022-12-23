@@ -35,6 +35,9 @@ script = ExtResource("3")
 
 [node name="Shadows" type="Node2D" parent="Trees"]
 
+[node name="Flowers" type="Node2D" parent="Trees"]
+y_sort_enabled = true
+
 [node name="Player" parent="Trees" instance=ExtResource("1")]
 
 [node name="Sun" type="PointLight2D" parent="."]
