@@ -64,6 +64,7 @@ texture_region_size = Vector2i(16, 32)
 [sub_resource type="CanvasTexture" id="CanvasTexture_cn3yk"]
 diffuse_texture = ExtResource("1")
 normal_texture = ExtResource("2_op1jh")
+texture_filter = 2
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jpkhs"]
 texture = SubResource("CanvasTexture_cn3yk")

@@ -9,8 +9,6 @@ atlas = ExtResource("4")
 region = Rect2(0, 0, 16, 16)
 
 [node name="Map" instance=ExtResource("1")]
-material = null
-timeOfDay = 1201
 
 [node name="Background" parent="." index="0"]
 position = Vector2(-258, -252)

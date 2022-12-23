@@ -1,15 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmj810chv3gbq"]
+[gd_scene load_steps=6 format=3 uid="uid://dmj810chv3gbq"]
 
 [ext_resource type="PackedScene" uid="uid://ddfbxpfnjpmhk" path="res://Scenes/Player.tscn" id="1"]
+[ext_resource type="Script" path="res://Scripts/Map.cs" id="1_gr1mk"]
 [ext_resource type="TileSet" uid="uid://cn7g02b2jkhcu" path="res://Tiles/tileset1.tres" id="2"]
 [ext_resource type="Script" path="res://Scripts/Trees.cs" id="3"]
-[ext_resource type="Script" path="res://Scripts/Map.cs" id="4"]
-[ext_resource type="Material" uid="uid://bpf1pd3usvtux" path="res://Materials/Map.tres" id="5"]
 [ext_resource type="Texture2D" uid="uid://ce1tor7i7dkop" path="res://Images/sun1.png" id="6"]
 
 [node name="Map" type="Node2D"]
-material = ExtResource("5")
-script = ExtResource("4")
+script = ExtResource("1_gr1mk")
+timeOfDay = 1201
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(-254, -253)

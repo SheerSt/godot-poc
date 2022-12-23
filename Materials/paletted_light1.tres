@@ -118,6 +118,7 @@ void vertex() {
     }
 }
 
+// TODO: keep references but remove if unused.
 // https://www.youtube.com/watch?v=2JbhkZe22bE
 // https://github.com/CptPotato/GodotThings/tree/master/SmoothPixelFiltering
 // https://github.com/uheartbeast/jitter-free-pixelart-scaling/blob/master/JitterFreePixelArt.shader
@@ -144,27 +145,19 @@ uniform float smoothing_factor : hint_range(0.1, 1.0) = 1.0;
 
 vec2 computeUV(vec2 uv, vec2 pixel_size)
 {
-	// compute the new uv
+	// Compute the new uv
 	vec2 uv_width = fwidth(uv);
 	vec2 sprite_screen_resolution = smoothing_factor / uv_width;
-		
+
 	vec2 uv_pixel_src = floor(uv / pixel_size + 0.499);
-	
+
 	vec2 edge = uv_pixel_src;
 	edge = edge * pixel_size * sprite_screen_resolution;
 
 	vec2 uv_pixel = uv * sprite_screen_resolution;
 	vec2 uv_factor = clamp(uv_pixel - edge + 0.5, 0.0, 1.0);
-
-	return (mix(uv_pixel_src - 1.0, uv_pixel_src, uv_factor) + 0.5) * pixel_size;
-}
-
-
-// https://godotshaders.com/snippet/random-value/
-float random(vec2 uv) {
-    return fract(sin(dot(uv.xy,
-        vec2(12.9898,78.233))) *
-            43758.5453123);
+	
+	return (mix(uv_pixel_src - 1.0, uv_pixel_src, uv_factor) + 0.5) * pixel_size;;
 }
 
 void fragment() {
@@ -178,9 +171,11 @@ void fragment() {
 	//float y_offset = max(sin(TIME * 2.0 + xy_offset - bottom_left.x * 50.0), .5);
 	//float  xy_offset = world_pos.x / 13.0 * world_pos.y / 5.0;
 	float  xy_offset = world_pos.x / 13.0 * (UV.y * 2.0 - world_pos.y) * PI / 5.0;
-	float y_offset = max(sin(TIME / 2.0 + xy_offset), .95);
+	float y_offset = max(sin(TIME + xy_offset), .95);  //  / 2.0
 	y_offset -= .95;
-	y_offset *= (NORMAL.x);  // somewhat arbitrary
+	// Somewhat arbitrary.
+	if (int(xy_offset) % 2 == 0) y_offset *= -(abs(NORMAL.x));
+	else y_offset *= (NORMAL.x);  // looked good as well.
 	y_offset *= (.06 - UV.y);  // decrease effect near bottom.
 	y_offset *= .05;
 	int rounded = int(y_offset * 40000.0); // attempt to smooth by forcing it to sway in chunks (?)
@@ -203,13 +198,16 @@ void fragment() {
 	*/
 	//
 	
-	// Prevent jaggies.
-	COLOR = texturePointSmooth(TEXTURE, altUV, TEXTURE_PIXEL_SIZE).rgba;  // doesn't fix the issue.
-	//COLOR = texture(TEXTURE, computeUV(altUV, TEXTURE_PIXEL_SIZE));
-    //COLOR = texture(TEXTURE, altUV);
+	// Prevent jitter.
+	//COLOR = texturePointSmooth(TEXTURE, altUV, TEXTURE_PIXEL_SIZE).rgba;  // doesn't fix the issue.
+	altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
+	// This fixes the borders on the tree tiles but idk if it would fix other tiles.
+	altUV.x = clamp(altUV.x, 0.0322, .0616);  
+	COLOR = texture(TEXTURE, altUV);
 	
 	// Calculate basic output color after normal
-	
+	// I didn't keep the reference but I got this from some opengl page
+	// It's likely also in the Godot source.
 	//vec3 norm = normalize(Normal);
 	//vec3 lightDir = normalize(lightPos - FragPos);  
 	//float diff = max(dot(norm, lightDir), 0.0);
@@ -222,16 +220,16 @@ void fragment() {
 	// Gotten from here: https://github.com/godotengine/godot/blob/47ef0549ee490bca066ac00587076f123d973a55/drivers/gles3/shaders/canvas.glsl
 	// Having to do this in order to try out linear filtering.
 	vec3 normal;
-	normal.xy = texture(NORMAL_TEXTURE, computeUV(altUV, TEXTURE_PIXEL_SIZE)).xy * vec2(2.0, -2.0) - vec2(1.0, -1.0);
+	normal.xy = texture(NORMAL_TEXTURE, altUV).xy * vec2(2.0, -2.0) - vec2(1.0, -1.0);
 	normal.z = sqrt(1.0 - dot(normal.xy, normal.xy));
-	float diff = max(dot(normal, lightDir), 0.0);
+	float diff = max(dot(normal, lightDir), 0.0);  // Could usually just pass NORMAL here.
 	vec3 diffuse = diff * light_color;
 	vec3 c = (ambient_light + diffuse) * COLOR.rgb;
 
     int index_of_closest;
     float distance_to_closest = 10000.0;
 
-    for (int i = 0; i < int(palette_size); i++) {
+    for (int i = 0; i < int(palette_size); ++i) {
         float d = find_weighted_distance(color_palette[i], c);
         if (d < distance_to_closest) {
             index_of_closest = i;
@@ -239,8 +237,13 @@ void fragment() {
         }
     }
 
+	// This version will keep the black outline but discard the rest of the palette effect.
+	//if (index_of_closest <= 0) COLOR.rgb = color_palette[index_of_closest].rgb * modulate;
+	
+	// The reason that this introduces 'jitter' I think is because the
+	// blending between pixel edges gets removed here.
 	//COLOR.rgb = c;
-    COLOR.rgb = vec3(color_palette[index_of_closest].rgb) * modulate;
+	COLOR.rgb = color_palette[index_of_closest].rgb * modulate;
 }
 "
 
@@ -252,4 +255,4 @@ shader_parameter/light_angle = 45.0
 shader_parameter/light_color = null
 shader_parameter/modulate = null
 shader_parameter/palette_texture = ExtResource("1_vnmrc")
-shader_parameter/smoothing_factor = null
+shader_parameter/smoothing_factor = 1.0
