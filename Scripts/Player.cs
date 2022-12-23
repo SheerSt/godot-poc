@@ -250,7 +250,7 @@ public partial class Player : CharacterBody2D
 				PackedScene footPrints = GD.Load<PackedScene>("res://Scenes/Footprints.tscn");
 				Node node = footPrints.Instantiate();
 				Sprite2D sprite = node.GetChild<Sprite2D>(0);
-				sprite.Position = Position.Floor() + new Vector2(0, 8 - yOffset);
+				sprite.Position = Position.Floor() + new Vector2(0, 2 - yOffset);
 				yOffset += 2;
 
 				if (direction == new Vector2(1, 0))

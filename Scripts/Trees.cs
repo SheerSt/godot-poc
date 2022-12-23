@@ -46,25 +46,31 @@ public partial class Trees : TileMap {
         }
     }
 
-    public void UpdateShadows(int timeOfDay, Color modulate)
+    public void UpdateShadows(int timeOfDay)
     {
-
-
         // The 1400 is arbitrary to sync it, idk why it's not synced by default.
         float percentThroughDay = (timeOfDay + 1400 % 720) / 720f;
 
         // Used by light angle shader.
-        TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(1);
-        TileData tileData = atlasSource.GetTileData(new Vector2i(0, 0), 0);
         float light_angle = (((timeOfDay + 1080) % 1440) / 1440f) * (float)Math.PI * 2.0f;
-        (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
-        (tileData.Material as ShaderMaterial).SetShaderParameter("modulate", modulate);
 
         float lightFade = (((timeOfDay + 1080) % 1440) / 1440f);
         lightFade = (float)Math.Sin(lightFade * Math.PI * 2) + 1f;
         lightFade = Math.Min((lightFade), 1.0f);
         lightFade = Math.Max(lightFade, .3f);
+
+        // TODO: I feel like the tile atlases are set up wrong, this shouldn't be necessary?
+        // If the material was shared, maybe it would update, not sure.
+        // Regular trees.
+        TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(1);
+        TileData tileData = atlasSource.GetTileData(new Vector2i(0, 0), 0);
+        (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
         (tileData.Material as ShaderMaterial).SetShaderParameter("light_color", new Vector3(1f, 1f, 1f) * lightFade);
+        // Large trees.
+        atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(5);
+        tileData = atlasSource.GetTileData(new Vector2i(0, 0), 0);
+        (tileData.Material as ShaderMaterial).SetShaderParameter("light_angle", light_angle);
+        (tileData.Material as ShaderMaterial).SetShaderParameter("light_color", new Vector3(1f, 1f, 1f) * lightFade);  // TODO: uncomment
 
         // Not sure why this +5 is needed. if maxY changes, the 5 needs to change
         float xPercent = (float)Math.Sin(percentThroughDay * Math.PI * 2);

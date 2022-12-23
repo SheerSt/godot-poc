@@ -18,8 +18,6 @@ shader_type canvas_item;
 
 //global uniform float light_angle;
 uniform float light_angle = 45.0;
-// TODO: MODULATE var is gone, so using this as shader param for now.
-uniform vec3 modulate = vec3(1.0);
 uniform vec3 ambient_light = vec3(1.0);
 uniform vec3 light_color = vec3(1.0);
 
@@ -202,7 +200,12 @@ void fragment() {
 	//COLOR = texturePointSmooth(TEXTURE, altUV, TEXTURE_PIXEL_SIZE).rgba;  // doesn't fix the issue.
 	altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
 	// This fixes the borders on the tree tiles but idk if it would fix other tiles.
-	altUV.x = clamp(altUV.x, 0.0322, .0616);  
+	altUV.x = clamp(altUV.x, 0.0322, .0616);
+
+	// https://github.com/godotengine/godot/issues/49781
+	// This is how modulate is handled now. COLOR is COLOR * MODULATE
+	// until you assign it.
+	vec3 modulate = COLOR.rgb / texture(TEXTURE, UV).rgb;
 	COLOR = texture(TEXTURE, altUV);
 	
 	// Calculate basic output color after normal
@@ -253,6 +256,5 @@ shader_parameter/ambient_light = null
 shader_parameter/bias = Vector3(1, 0.5, 1)
 shader_parameter/light_angle = 45.0
 shader_parameter/light_color = null
-shader_parameter/modulate = null
 shader_parameter/palette_texture = ExtResource("1_vnmrc")
 shader_parameter/smoothing_factor = 1.0

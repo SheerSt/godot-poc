@@ -1,8 +1,9 @@
-[gd_resource type="TileSet" load_steps=23 format=3 uid="uid://cn7g02b2jkhcu"]
+[gd_resource type="TileSet" load_steps=24 format=3 uid="uid://cn7g02b2jkhcu"]
 
 [ext_resource type="Texture2D" uid="uid://ddsms7bd3f446" path="res://Tiles/tileset1.png" id="1"]
 [ext_resource type="Texture2D" uid="uid://d3p2fnsir27wi" path="res://Tiles/tileset1-normal.png" id="2_op1jh"]
 [ext_resource type="Material" uid="uid://cr3j4k4iinj7o" path="res://Materials/paletted_light1.tres" id="3"]
+[ext_resource type="Material" uid="uid://btghvtamqullm" path="res://Materials/largetree-motion1-todoconsolidate.tres" id="4_ntkow"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_558cl"]
 texture = ExtResource("1")
@@ -543,6 +544,7 @@ margins = Vector2i(16, 32)
 [sub_resource type="CanvasTexture" id="CanvasTexture_3ut6m"]
 diffuse_texture = ExtResource("1")
 normal_texture = ExtResource("2_op1jh")
+texture_filter = 2
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ddhfw"]
 texture = SubResource("CanvasTexture_3ut6m")
@@ -551,6 +553,7 @@ texture_region_size = Vector2i(48, 48)
 use_texture_padding = false
 0:0/0 = 0
 0:0/0/texture_offset = Vector2i(0, 16)
+0:0/0/material = ExtResource("4_ntkow")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
 

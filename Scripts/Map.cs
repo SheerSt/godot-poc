@@ -26,7 +26,7 @@ public partial class Map : Node2D
 
 		//        timer = 0f;
 		//        timeOfDay += 4;
-		doubleTimeOfDay += delta * 10.0;
+		doubleTimeOfDay += delta * 60.0;
 		timeOfDay = (int)doubleTimeOfDay;
 
 		if (timeOfDay == prevTimeOfDay) return;
@@ -147,7 +147,7 @@ public partial class Map : Node2D
 
 		// Update shadows based on time of day.
 		Trees trees = (Trees)GetNode("Trees");
-		trees.UpdateShadows(timeOfDay, color);
+		trees.UpdateShadows(timeOfDay);
 
 		//Adjust sun light.
 		float percentThroughDay = ((timeOfDay + 1100) % 1440) / 1440f;
