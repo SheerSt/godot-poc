@@ -27,8 +27,10 @@ public partial class Trees : TileMap {
             Shadow polygon2D = new Shadow();
             // TODO: tile atlas is likely set up wrong, every unique tile id is at position 0,0 and
             // is in a different atlas.
+            // Vector2i regionSize = atlasSource.GetTileTextureRegion(new Vector2i(0, 0)).Size;
+            // Rect2 regionRect = polygon2D.regionRect = new Rect2(0, 0, regionSize.x, regionSize.y);
             Rect2 regionRect = polygon2D.regionRect = atlasSource.GetTileTextureRegion(new Vector2i(0 ,0));
-            polygon2D.originalPosition = MapToLocal(position);
+            polygon2D.originalPosition = ToGlobal(MapToLocal(position));
             polygon2D.Texture = atlasSource.Texture;
             //
             Vector2[] uv = new Vector2[4];
@@ -38,7 +40,9 @@ public partial class Trees : TileMap {
             uv[3] = new Vector2(regionRect.Position.x, regionRect.End.y);
             polygon2D.Uv = uv;
 
-            polygon2D.tileOffset = tileData.TextureOffset;  // TODO: is this used?
+            // GD.Print(tileData.TextureOffset); -> they are all 0,0 now.
+            // Keeping this incase there's still a use-case for it.
+            polygon2D.tileOffset = tileData.TextureOffset;
             polygon2D.tileOffset += new Vector2(3, 0);  // Looks good visually.
 
             // Add the sprite as a child to Shadows TileMap
@@ -76,9 +80,6 @@ public partial class Trees : TileMap {
         float xPercent = (float)Math.Sin(percentThroughDay * Math.PI * 2);
         float yPercent = (float)Math.Cos(percentThroughDay * Math.PI * 2) + 5;
 
-
-        // TODO: Debug, remove
-        return;
 
         // For each tile
         foreach (Shadow polygon2D in shadows.GetChildren())

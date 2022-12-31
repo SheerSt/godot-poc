@@ -65,6 +65,7 @@ use_texture_padding = false
 0:0/0/material = ExtResource("3")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-5, 9, 5.5, 9, 6, 16.5, -5.5, 16.5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dysdo"]
 texture = ExtResource("1")
@@ -497,6 +498,7 @@ use_texture_padding = false
 0:0/0/material = ExtResource("4_ntkow")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -3, 6.5, -2.5, 7.5, 4.5, -7.5, 4.5)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aktv7"]
 texture = ExtResource("1")
