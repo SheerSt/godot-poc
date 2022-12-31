@@ -30,7 +30,11 @@ public partial class Trees : TileMap {
             // Vector2i regionSize = atlasSource.GetTileTextureRegion(new Vector2i(0, 0)).Size;
             // Rect2 regionRect = polygon2D.regionRect = new Rect2(0, 0, regionSize.x, regionSize.y);
             Rect2 regionRect = polygon2D.regionRect = atlasSource.GetTileTextureRegion(new Vector2i(0 ,0));
-            polygon2D.originalPosition = ToGlobal(MapToLocal(position));
+            polygon2D.originalPosition = MapToLocal(position);
+            // I don't see a way to set polygon2D texture origin in Godot 4.
+            // If I could set the origin to 'centered', this would be fixed.
+            //polygon2D.originalPosition.x -= regionRect.Size.x / 2;
+            //polygon2D.originalPosition.y -= regionRect.Size.y / 2;
             polygon2D.Texture = atlasSource.Texture;
             //
             Vector2[] uv = new Vector2[4];
@@ -40,10 +44,11 @@ public partial class Trees : TileMap {
             uv[3] = new Vector2(regionRect.Position.x, regionRect.End.y);
             polygon2D.Uv = uv;
 
-            // GD.Print(tileData.TextureOffset); -> they are all 0,0 now.
-            // Keeping this incase there's still a use-case for it.
-            polygon2D.tileOffset = tileData.TextureOffset;
-            polygon2D.tileOffset += new Vector2(3, 0);  // Looks good visually.
+            polygon2D.tileOffset = -tileData.TextureOffset - regionRect.Size / 2;
+            polygon2D.tileOffset += new Vector2(0, 1);  // Looks good visually.
+
+            //
+            //polygon2D.Offset = -tileData.TextureOffset - regionRect.Size / 2 - new Vector2(4, 4);
 
             // Add the sprite as a child to Shadows TileMap
             shadows.AddChild(polygon2D);

@@ -233,7 +233,7 @@ void fragment() {
 	int startIndex = 0;
 	int endIndex = int(palette_size);
 	if (endIndex > 4) {
-		if (UV.y > .066) {
+		if (UV.y > .0645) {
 			startIndex = 4;
 		}
 		else endIndex = 4;
