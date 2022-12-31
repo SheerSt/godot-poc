@@ -48,7 +48,12 @@ public partial class Trees : TileMap {
             polygon2D.tileOffset += new Vector2(0, 1);  // Looks good visually.
 
             //
-            //polygon2D.Offset = -tileData.TextureOffset - regionRect.Size / 2 - new Vector2(4, 4);
+            //polygon2D.Offset = -tileData.TextureOffset - regionRect.Size / 2 - new Vector2(4, 4);  // TODO: remove
+
+            // Load the shader material and attach.
+            // TODO: remove if unused.
+            //ShaderMaterial shaderMaterial = (ShaderMaterial)ResourceLoader.Load("res://Materials/vertex_pixel_snap.tres");
+            //polygon2D.Material = shaderMaterial;
 
             // Add the sprite as a child to Shadows TileMap
             shadows.AddChild(polygon2D);
