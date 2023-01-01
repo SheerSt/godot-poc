@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://wll6g264g26e"]
+[gd_scene load_steps=8 format=3 uid="uid://wll6g264g26e"]
 
 [ext_resource type="PackedScene" uid="uid://dmj810chv3gbq" path="res://Scenes/Map.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://pn1d4g3qyxyv" path="res://Images/new-bark-town2.png" id="2"]
 [ext_resource type="PackedScene" uid="uid://c5yy3ql5mttgx" path="res://Scenes/Flower.tscn" id="3_01t57"]
 [ext_resource type="Texture2D" uid="uid://q7ddn8x4fo2u" path="res://Images/light1.png" id="4"]
+[ext_resource type="PackedScene" uid="uid://bpys0xg6n3kf6" path="res://Monsters/Diglett/Diglett.tscn" id="5_imye7"]
+[ext_resource type="PackedScene" uid="uid://c7t8s4jixdcm3" path="res://Monsters/Nidorino/Nidorino.tscn" id="5_s6el7"]
 
 [sub_resource type="AtlasTexture" id="1"]
 atlas = ExtResource("4")
@@ -49,6 +51,12 @@ frame = 0
 [node name="Grass3" parent="Trees/Flowers" index="5" instance=ExtResource("3_01t57")]
 position = Vector2(-16, 17)
 frame = 1
+
+[node name="Nidorino1" parent="Trees/Monsters" index="0" instance=ExtResource("5_s6el7")]
+position = Vector2(-82, -24)
+
+[node name="Diglett1" parent="Trees/Monsters" index="1" instance=ExtResource("5_imye7")]
+position = Vector2(70, 21)
 
 [node name="PointLight2D" type="PointLight2D" parent="." index="5"]
 visible = false

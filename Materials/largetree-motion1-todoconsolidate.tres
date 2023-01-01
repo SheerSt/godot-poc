@@ -260,7 +260,7 @@ void fragment() {
 
 [resource]
 shader = SubResource("Shader_uqgc5")
-shader_parameter/light_angle = 45.0
+shader_parameter/light_angle = 57.757
 shader_parameter/ambient_light = Vector3(0.5, 0.5, 0.5)
 shader_parameter/light_color = Vector3(1, 1, 1)
 shader_parameter/bias = Vector3(1, 0.5, 1)
