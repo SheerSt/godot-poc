@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bpys0xg6n3kf6"]
 
-[ext_resource type="PackedScene" path="res://Monsters/Monster.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://bmvhelfn3v36w" path="res://Monsters/Monster.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://d3vw6kfcsj441" path="res://Monsters/Diglett/overworld.png" id="2"]
 [ext_resource type="AudioStream" uid="uid://bhx0inxsbfw8d" path="res://Sounds/diglett-move1.ogg" id="3"]
 [ext_resource type="Script" path="res://Monsters/Diglett/Diglett.cs" id="4"]
