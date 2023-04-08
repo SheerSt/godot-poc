@@ -110,7 +110,7 @@ public partial class Map : Node2D
 					  (day2Color * day2Component) +
 					  (eveningColor * eveningComponent) +
 					  (nightColor * nightComponent);
-		color.a = 1f;  // Re-set alpha so that it's not in the range 0f - 1f.
+		color.A = 1f;  // Re-set alpha so that it's not in the range 0f - 1f.
 
 		// All child nodes get this applied.
 		Modulate = color;

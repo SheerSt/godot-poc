@@ -76,7 +76,7 @@ public partial class Player : CharacterBody2D
 						if (yPos < 0 || yPos >= height) continue;
 
 						Color color = bumpMap.GetPixel(xPos, yPos);
-						sum += Math.Abs(color.r - color.g) + Math.Abs(color.g - color.b) + Math.Abs(color.b - color.r);
+						sum += Math.Abs(color.R - color.G) + Math.Abs(color.G - color.B) + Math.Abs(color.B - color.R);
 
 					}
 
@@ -102,9 +102,9 @@ public partial class Player : CharacterBody2D
 	public int OffsetSprite()
 	{
 
-		Vector2 newPos = new Vector2(Position.x, Position.y) - background.Position;
-		int xPos = (int)newPos.x;
-		int yPos = (int)newPos.y;
+		Vector2 newPos = new Vector2(Position.X, Position.Y) - background.Position;
+		int xPos = (int)newPos.X;
+		int yPos = (int)newPos.Y;
 		int offsetY = 0;
 		if (0 < xPos && xPos < bumps.Length && 0 < yPos && yPos < bumps[xPos].Length)
 		{
@@ -167,22 +167,22 @@ public partial class Player : CharacterBody2D
 		if (Input.IsKeyPressed(Godot.Key.Up))
 		{
 			directionName += "up";
-			direction.y -= 1;
+			direction.Y -= 1;
 		}
 		else if (Input.IsKeyPressed(Godot.Key.Down))
 		{
 			directionName += "down";
-			direction.y += 1;
+			direction.Y += 1;
 		}
 		if (Input.IsKeyPressed(Godot.Key.Right))
 		{
 			directionName += "right";
-			direction.x += 1;
+			direction.X += 1;
 		}
 		else if (Input.IsKeyPressed(Godot.Key.Left))
 		{
 			directionName += "left";
-			direction.x -= 1;
+			direction.X -= 1;
 		}
 
 		Vector2 directionNor = direction.Normalized();
@@ -201,10 +201,10 @@ public partial class Player : CharacterBody2D
 				animationPlayer.Play(animationName);
 
 			}
-			if (!animationPlayer.PlaybackSpeed.Equals(speed))
+			if (!animationPlayer.SpeedScale.Equals(speed))
 			{
 
-				animationPlayer.PlaybackSpeed = speed;
+				animationPlayer.SpeedScale = speed;
 
 			}
 

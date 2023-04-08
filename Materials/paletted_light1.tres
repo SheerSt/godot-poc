@@ -253,8 +253,8 @@ void fragment() {
 [resource]
 shader = SubResource("2")
 shader_parameter/light_angle = 45.0
-shader_parameter/ambient_light = null
-shader_parameter/light_color = null
+shader_parameter/ambient_light = Vector3(1, 1, 1)
+shader_parameter/light_color = Vector3(1, 1, 1)
 shader_parameter/bias = Vector3(1, 0.5, 1)
 shader_parameter/smoothing_factor = 1.0
 shader_parameter/palette_texture = ExtResource("1_vnmrc")

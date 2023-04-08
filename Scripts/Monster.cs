@@ -57,13 +57,13 @@ public partial class Monster : CharacterBody2D
 		this.sprite.FlipH = false;
 		Vector2 directionVector = this.direction.getVector();
 		int offsetY = 0;
-		if (directionVector.x > 0)
+		if (directionVector.X > 0)
 			this.sprite.FlipH = true;
-		if (directionVector.y < 0)
+		if (directionVector.Y < 0)
 			offsetY = 1;
-		else if (directionVector.y > 0)
+		else if (directionVector.Y > 0)
 			offsetY = 2;
-		this.sprite.FrameCoords = new Vector2i(0, offsetY);
+		this.sprite.FrameCoords = new Vector2I(0, offsetY);
 
 	}
 
