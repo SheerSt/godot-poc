@@ -3,233 +3,60 @@
 [ext_resource type="Texture2D" uid="uid://dgsua5ci76r8r" path="res://Tiles/tree2.palette.png" id="1_svqhe"]
 
 [sub_resource type="Shader" id="Shader_uqgc5"]
-code = "// credit to u/MartialArtTetherball
-//https://www.reddit.com/r/godot/comments/gz2led/wrote_a_shader_that_maps_a_pixel_art_color/
-//https://pastebin.com/bsdEUAgA
+code = "#include "Materials/common.gdshaderinc"
 
-// NOTE: if put in a viewport container, light blending doeesn't happen and the palette is applied.
-// Can palette the entire screen that way
-
-// Good references:
-// https://github.com/ruffiely/windshader_godot/blob/master/Vegetation_Shader.shader
-
-
-shader_type canvas_item;
-
-//global uniform float light_angle;
-uniform float light_angle = 45.0;
-uniform vec3 ambient_light = vec3(1.0);
-uniform vec3 light_color = vec3(1.0);
-
-uniform vec3 bias = vec3(1.0, 0.5, 1.0); // Hue, Saturation (Saturation * Value), and Lightness (From LAB)
-
-uniform sampler2D palette_texture;
-varying flat float palette_size;
-varying flat vec4 color_palette[24];
-
-
-vec3 rgb2hsv(vec3 c) {
-    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
-    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
-
-   float d = q.x - min(q.w, q.y);
-   float e = 1.0e-10;
-   return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-}
-
-float rgb2lightness(vec3 c) { // adapted from lab color space equations
-    vec3 tmp = vec3(
-        (c.r>.04045)?pow((c.r+.055)/1.055,2.4):c.r/12.92,
-        (c.g>.04045)?pow((c.g+.055)/1.055,2.4):c.g/12.92,
-        (c.b>.04045)?pow((c.b+.055)/1.055,2.4):c.b/12.92
-    );
-
-    mat3 mat = mat3(
-        vec3(0),
-        vec3(0.2126,0.7152,0.0722),
-        vec3(0)
-    );
-
-    vec3 xyz = 100.*(tmp*mat);
-    vec3 n = xyz/vec3(95.047,100.,108.883),
-
-    v = vec3(0, (n.y>.008856)?pow(n.y,1./3.):(7.787*n.y)+(16./116.), 0);
-    return ((116.*v.y)-16.)/100.0;
-}
-
-float square_magnitude(vec3 color) {
-    return pow(color.x, 2) + pow(color.y, 2) + pow(color.z, 2);
-}
-
-float distance_with_hue_consideration(vec3 col_a, vec3 col_b) {
-    float a = square_magnitude((col_a - col_b));
-    float b = square_magnitude(((col_a - vec3(1.0, 0, 0)) - col_b));
-    float c = square_magnitude(((col_a + vec3(1.0, 0, 0)) - col_b));
-
-    a = min(a, b);
-    return min(a, c);
-}
-
-float find_weighted_distance(vec4 color_a, vec3 color_b) {
-    vec3 a_as_hsv = rgb2hsv(color_a.rgb);
-    vec3 b_as_hsv = rgb2hsv(color_b);
-    float a_lightness = color_a.a;
-    float b_lightness = rgb2lightness(color_b);
-
-    vec3 col1 = vec3(a_as_hsv.x, a_as_hsv.y * a_as_hsv.z, a_lightness);
-    vec3 col2 = vec3(b_as_hsv.x, b_as_hsv.y * b_as_hsv.z, b_lightness);
-
-    return distance_with_hue_consideration(
-        col1 * bias,
-        col2 * bias 
-    );
-}
-
-varying vec2 world_pos;
 
 void vertex() {
 	
 	// 'Wind' shader done by me.
-	// This somehow works for Godot4 (no idea what MODEL_MATRIX is):
 	world_pos = (MODEL_MATRIX * SCREEN_MATRIX * vec4(VERTEX, 1.0, 1.0)).xy;
-	vec2 world_pos_adjusted = world_pos + VERTEX;  // Prevents the 'bulge' effect, world_pos will be left side of tree.
+	vec2 world_pos_adjusted = world_pos + VERTEX;
 	float scale = 40.0;
-	float xy_offset = world_pos_adjusted.x * scale - world_pos_adjusted.y * scale;  // sway trees from bottom-left to top-right.
+	float xy_offset = world_pos_adjusted.x * scale - world_pos_adjusted.y * scale;
 	float x_offset = sin(TIME * 1.0 + xy_offset);
 	x_offset *= x_offset - 1.0;  // makes -x sway less that +x sway.
 	x_offset *= (5.0 - VERTEX.y);
 	x_offset *= .02;
-	int rounded = int(x_offset * 10.0); // attempt to smooth by forcing it to sway in chunks (?)
+	int rounded = int(x_offset * 10.0);
 	x_offset = float(rounded) / 10.0;
 	VERTEX.x += x_offset;
-	//
 	
-    palette_size = float(textureSize(palette_texture, 0).y);
-    vec3 c;
-    for (int i = 0; i < int(palette_size); i++) {
-        c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
-        // pack colors from palette texture, and pre-calculate their lightnesses
-        color_palette[i] = vec4(c, rgb2lightness(c));
-    }
-}
-
-// TODO: keep references but remove if unused.
-// https://www.youtube.com/watch?v=2JbhkZe22bE
-// https://github.com/CptPotato/GodotThings/tree/master/SmoothPixelFiltering
-// https://github.com/uheartbeast/jitter-free-pixelart-scaling/blob/master/JitterFreePixelArt.shader
-vec4 texturePointSmooth(sampler2D smp, vec2 uv, vec2 pixel_size)
-{
-	vec2 ddx = dFdx(uv);
-	vec2 ddy = dFdy(uv);
-	vec2 lxy = sqrt(ddx * ddx + ddy * ddy);
-	
-	vec2 uv_pixels = uv / pixel_size;
-	
-	vec2 uv_pixels_floor = round(uv_pixels) - vec2(0.5f);
-	vec2 uv_dxy_pixels = uv_pixels - uv_pixels_floor;
-	
-	uv_dxy_pixels = clamp((uv_dxy_pixels - vec2(0.5f)) * pixel_size / lxy + vec2(0.5f), 0.0f, 1.0f);
-	
-	uv = uv_pixels_floor * pixel_size;
-	
-	return textureGrad(smp, uv + uv_dxy_pixels * pixel_size, ddx, ddy);
-}
-
-// https://godotshaders.com/shader/sub-pixel-accurate-pixel-sprite-filtering/
-uniform float smoothing_factor : hint_range(0.1, 1.0) = 1.0;
-
-vec2 computeUV(vec2 uv, vec2 pixel_size)
-{
-	// Compute the new uv
-	vec2 uv_width = fwidth(uv);
-	vec2 sprite_screen_resolution = smoothing_factor / uv_width;
-
-	vec2 uv_pixel_src = floor(uv / pixel_size + 0.499);
-
-	vec2 edge = uv_pixel_src;
-	edge = edge * pixel_size * sprite_screen_resolution;
-
-	vec2 uv_pixel = uv * sprite_screen_resolution;
-	vec2 uv_factor = clamp(uv_pixel - edge + 0.5, 0.0, 1.0);
-	
-	return (mix(uv_pixel_src - 1.0, uv_pixel_src, uv_factor) + 0.5) * pixel_size;;
 }
 
 void fragment() {
 	
-	// 'Wind' shader done by me.
 	vec2 altUV = UV;
-	// float y_offset = max(sin(TIME * 1.0 + xy_offset + 2.0), .5);
-	// float y_offset = sin(TIME * 1.0 + xy_offset + 2.0);
-	//float xy_offset = -SCREEN_UV.x*0.0 + SCREEN_UV.y*4.0;
-	//float y_offset = max(sin(TIME * 2.0 + xy_offset), .5);
-	//float y_offset = max(sin(TIME * 2.0 + xy_offset - bottom_left.x * 50.0), .5);
-	//float  xy_offset = world_pos.x / 13.0 * world_pos.y / 5.0;
 	float  xy_offset = world_pos.x / 13.0 * (UV.y * 2.0 - world_pos.y) * PI / 5.0;
-	float y_offset = max(sin(TIME + xy_offset), .95);  //  / 2.0
+	float y_offset = max(sin(TIME + xy_offset), .95);
 	y_offset -= .95;
-	// Somewhat arbitrary.
 	if (int(xy_offset) % 2 == 0) y_offset *= -(abs(NORMAL.x)) * 1.5;
 	else y_offset *= (NORMAL.x) * 1.5;  // looked good as well.
 	y_offset *= (.06 - UV.y);  // decrease effect near bottom.
 	y_offset *= .05;
-	int rounded = int(y_offset * 40000.0); // attempt to smooth by forcing it to sway in chunks (?)
-	y_offset = float(rounded) / 40000.0;  // TODO: iirc this does very little
+	int rounded = int(y_offset * 40000.0);
+	y_offset = float(rounded) / 40000.0;
 	altUV.y += y_offset * 8.0;
 	
-	/* prev effect
-	float scale = 40.0;
-	vec2 world_pos = SCREEN_UV - UV;  // Makes it go up in horizontal lines
-	//world_pos.x = UV.x;  // Avoid diagonal.
-	float xy_offset = -world_pos.x*scale + world_pos.y*scale;
-	float y_offset = max(sin(TIME * 4.0 + xy_offset), .85);
-	y_offset -= .85;
-	if (y_offset > 0.0) y_offset = .15;
-	y_offset *= sin(TIME * 1.0 + xy_offset);
-	y_offset *= (NORMAL.z * NORMAL.y * NORMAL.x);  // somewhat arbitrary
-	y_offset *= .02;
-	y_offset *= abs(.5 - UV.x) * 2.0;  // Avoid the middle of the texture.
-	altUV.y += y_offset;
-	*/
-	//
-	
 	// Prevent jitter.
-	//COLOR = texturePointSmooth(TEXTURE, altUV, TEXTURE_PIXEL_SIZE).rgba;  // doesn't fix the issue.
 	altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
-	// This fixes the borders on the tree tiles but idk if it would fix other tiles.
-	//altUV.x = clamp(altUV.x, 0.0322, .0616);
-
-	// https://github.com/godotengine/godot/issues/49781
-	// This is how modulate is handled now. COLOR is COLOR * MODULATE
-	// until you assign it.
 	vec3 modulate = COLOR.rgb / texture(TEXTURE, UV).rgb;
 	COLOR = texture(TEXTURE, altUV);
 	
-	// Calculate basic output color after normal
-	// I didn't keep the reference but I got this from some opengl page
-	// It's likely also in the Godot source.
-	//vec3 norm = normalize(Normal);
-	//vec3 lightDir = normalize(lightPos - FragPos);  
-	//float diff = max(dot(norm, lightDir), 0.0);
-	//vec3 diffuse = diff * lightColor;
-	//vec3 result = (ambient + diffuse) * objectColor;
-	//FragColor = vec4(result, 1.0);
-
-	//vec3 lightDir = normalize(light_pos - vec3(UV, 0.0));
+	// Calculate basic output color based on normal normal map image.
+	// This has to be done manually in Godot 2D shaders in order for this shader to work.
 	vec3 lightDir = vec3(cos(light_angle), sin(light_angle), .8);
-	// Gotten from here: https://github.com/godotengine/godot/blob/47ef0549ee490bca066ac00587076f123d973a55/drivers/gles3/shaders/canvas.glsl
-	// Having to do this in order to try out linear filtering.
 	vec3 normal;
 	normal.xy = texture(NORMAL_TEXTURE, altUV).xy * vec2(2.0, -2.0) - vec2(1.0, -1.0);
 	normal.z = sqrt(1.0 - dot(normal.xy, normal.xy));
-	float diff = max(dot(normal, lightDir), 0.0);  // Could usually just pass NORMAL here.
+	float diff = max(dot(normal, lightDir), 0.0);
 	vec3 diffuse = diff * light_color;
 	vec3 c = (ambient_light + diffuse) * COLOR.rgb;
 
     int index_of_closest;
     float distance_to_closest = 10000.0;
 	
+	// Uses the brown palette for the bottom-half of the tree.
+	// TODO: find a better way to split the palettes.
 	int startIndex = 0;
 	int endIndex = int(palette_size);
 	if (endIndex > 4) {
@@ -247,13 +74,7 @@ void fragment() {
         }
     }
 
-	// This version will keep the black outline but discard the rest of the palette effect.
-	//COLOR.rgb = c;
-	//if (index_of_closest <= 1 || index_of_closest == 4 || index_of_closest == 5) COLOR.rgb = color_palette[index_of_closest].rgb * modulate;
-	
-	// The reason that this introduces 'jitter' I think is because the
-	// blending between pixel edges gets removed here.
-	//COLOR.rgb = c;
+	// Assign to the nearest color.
 	COLOR.rgb = color_palette[index_of_closest].rgb * modulate;
 }
 "
