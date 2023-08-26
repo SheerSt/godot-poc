@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://ddsms7bd3f446" path="res://Tiles/tileset1.png" id="1"]
 [ext_resource type="Texture2D" uid="uid://d3p2fnsir27wi" path="res://Tiles/tileset1-normal.png" id="2_op1jh"]
-[ext_resource type="Material" uid="uid://cr3j4k4iinj7o" path="res://Materials/paletted_light1.tres" id="3"]
-[ext_resource type="Material" uid="uid://btghvtamqullm" path="res://Materials/largetree-motion1-todoconsolidate.tres" id="4_ntkow"]
+[ext_resource type="Material" uid="uid://cr3j4k4iinj7o" path="res://Materials/wind-lighting-smalltree.tres" id="3"]
+[ext_resource type="Material" uid="uid://btghvtamqullm" path="res://Materials/wind-lighting-largetree.tres" id="4_ntkow"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_ted37"]
 diffuse_texture = ExtResource("1")

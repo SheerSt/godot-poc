@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c5yy3ql5mttgx"]
 
-[ext_resource type="Material" uid="uid://dfamh8c1w5n45" path="res://Materials/flower-motion1.tres" id="1_mdkr0"]
+[ext_resource type="Material" uid="uid://dfamh8c1w5n45" path="res://Materials/wind-flower.tres" id="1_5h1bl"]
 [ext_resource type="Texture2D" uid="uid://ceyi76ymgh5uv" path="res://Tiles/flowers1.png" id="2_34c4w"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_pv6jb"]
@@ -8,7 +8,7 @@ diffuse_texture = ExtResource("2_34c4w")
 texture_filter = 2
 
 [node name="Flower" type="Sprite2D"]
-material = ExtResource("1_mdkr0")
+material = ExtResource("1_5h1bl")
 position = Vector2(26, -17)
 texture = SubResource("CanvasTexture_pv6jb")
 hframes = 4
