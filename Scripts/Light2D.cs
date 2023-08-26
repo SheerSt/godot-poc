@@ -23,7 +23,6 @@ public partial class PointLight2D : Godot.PointLight2D
             timer -= 1f;
             region = (region + 1) % 2;
             (Texture as AtlasTexture).Region = new Rect2(region * 16, 0, 16, 16);
-            //GD.Print((Texture2D as AtlasTexture).Region);
 
         }
 

@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using Godot;
 
 /** 
- * References:
- * 
- * csharp game example - https://github.com/Revolutionary-Games/Thrive
- * Godot csharp documentation - https://cyoann.github.io/GodotSharpAPI/
- *  - Note: Godot csharp api is usually the exact same as gdscript, except it uses CamelCase instead of underscore_case.
- * 
+ *
  */
 public partial class Player : CharacterBody2D
 {
@@ -32,7 +27,6 @@ public partial class Player : CharacterBody2D
 
 	double footprintTimer = 30;
 	bool justPressedX = true;
-	//float grassOverlayTimer = 0;
 
 	public override void _Ready()
 	{
@@ -48,14 +42,13 @@ public partial class Player : CharacterBody2D
 		collisionShape2D = (CollisionShape2D)FindChild("CollisionShape2D");
 		camera2D = (Camera2D)FindChild("Camera2D");
 
-		// TODO: might need to get this working for a tileset.
-		// TODO: move to a method
+		// Note: move this to a method.
 		background = GetNode<Sprite2D>("/root/Game/Map/Background");
 		bumpMap = background.Texture.GetImage();
-		//bumpMap.Lock();  // TODO: test / remove
 		int width = bumpMap.GetWidth();
 		int height = bumpMap.GetHeight();
 		bumps = new int[width][];
+
 		// Get bump map offsets.
 		float sum = 0f;
 		for (int k = 0; k < width; ++k)
@@ -82,6 +75,7 @@ public partial class Player : CharacterBody2D
 
 				}
 
+				// Alternatives:
 				// sum = sum / 32f;  // Looked good.
 				// sum = sum / 64f;  // Looked good but very subtle.
 				sum = sum / 52f;
@@ -127,8 +121,9 @@ public partial class Player : CharacterBody2D
 
 			if (Game.instance.debugMode && Input.IsKeyPressed(Godot.Key.Space)) speed = 10f;
 
+			// Experimental:
 			// Camera3D smoothing with increased catch-up time when player sprints.
-			/* TODO: This eventually causes the camera to destabilize
+			/* Note: This eventually causes the camera to destabilize
 			if (justPressedX)
 			{
 				justPressedX = false;
@@ -139,8 +134,7 @@ public partial class Player : CharacterBody2D
 				camera2D.FollowSmoothingSpeed += 0.2f;
 			else
 				camera2D.FollowSmoothingEnabled = false;
-				*/
-
+			*/
 		}
 		else
 		{
@@ -155,11 +149,6 @@ public partial class Player : CharacterBody2D
 			else
 				camera2D.PositionSmoothingEnabled = false;
 		}
-
-		//GD.Print(camera2D.FollowSmoothingEnabled);
-		//GD.Print(camera2D.FollowSmoothingSpeed);
-		//GD.Print(camera2D.GetCameraScreenCenter());
-		//GD.Print(camera2D.GetCameraPosition());
 
 		direction = new Vector2(0, 0);
 
@@ -237,8 +226,8 @@ public partial class Player : CharacterBody2D
 			}
 
 			// Offset sprite based on terrain.
-			this.yOffset = OffsetSprite();  // TODO: uncomment
-			this.yOffset = 0;  // TODO: remove
+			this.yOffset = OffsetSprite();
+			this.yOffset = 0;
 
 			// Check if it's time to have the player leave a footprint.
 			// Footprint is a Node with an Animation that plays. The Animation deletes the Node when it's done.
@@ -293,8 +282,7 @@ public partial class Player : CharacterBody2D
 				AnimationPlayer animationPlayer = node.GetChild<AnimationPlayer>(1);
 
 				float a = ((float)yOffset / 12f);
-				// yOffset >= 4 means the player is in a grassy area.
-				if (yOffset >= 4)
+				if (yOffset >= 4)  // yOffset >= 4 means the player is in a grassy area.
 				{
 					animationPlayer.CurrentAnimation = "footprints-fade-grass";
 					a = .5f;
@@ -313,7 +301,6 @@ public partial class Player : CharacterBody2D
 		}
 		else
 		{
-
 			footprintTimer = 30;
 
 			// Restart the idle animation, since player isn't moving.

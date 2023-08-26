@@ -4,7 +4,6 @@ using System;
 public partial class Camera2D : Godot.Camera2D
 {
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 

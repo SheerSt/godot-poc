@@ -20,12 +20,6 @@ public partial class Map : Node2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-
-		//        timer += delta;
-		//        if (timer < 1f) return;
-
-		//        timer = 0f;
-		//        timeOfDay += 4;
 		doubleTimeOfDay += delta * 30.0;
 		timeOfDay = (int)doubleTimeOfDay;
 
@@ -158,27 +152,3 @@ public partial class Map : Node2D
 	}
 
 }
-
-
-
-// TODO: remove
-
-/*
-foreach (TileMap tileMap in tileMaps)
-{
-	// Get the tilemap
-	TileSet tileSet = tileMap.TileSet;
-
-	foreach (int tileId in tileSet.GetTilesIds())
-	{
-		tileSet.TileSetModulate(tileId, color);
-	}
-
-}
-
-Sprite2D background = (Sprite2D)GetNode("Background");
-background.Modulate = color;
-
-Sprite2D playerSprite = (Sprite2D)GetNode("Trees/Player/Sprite2D");
-playerSprite.Modulate = color;
-*/

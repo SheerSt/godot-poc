@@ -25,16 +25,8 @@ public partial class Trees : TileMap {
             TileSetAtlasSource atlasSource = (TileSetAtlasSource)TileSet.GetSource(tileId);
 
             Shadow polygon2D = new Shadow();
-            // TODO: tile atlas is likely set up wrong, every unique tile id is at position 0,0 and
-            // is in a different atlas.
-            // Vector2i regionSize = atlasSource.GetTileTextureRegion(new Vector2i(0, 0)).Size;
-            // Rect2 regionRect = polygon2D.regionRect = new Rect2(0, 0, regionSize.x, regionSize.y);
             Rect2 regionRect = polygon2D.regionRect = atlasSource.GetTileTextureRegion(new Vector2I(0 ,0));
             polygon2D.originalPosition = MapToLocal(position);
-            // I don't see a way to set polygon2D texture origin in Godot 4.
-            // If I could set the origin to 'centered', this would be fixed.
-            //polygon2D.originalPosition.x -= regionRect.Size.x / 2;
-            //polygon2D.originalPosition.y -= regionRect.Size.y / 2;
             polygon2D.Texture = atlasSource.Texture;
             //
             Vector2[] uv = new Vector2[4];
@@ -46,14 +38,6 @@ public partial class Trees : TileMap {
 
             polygon2D.tileOffset = -tileData.TextureOrigin - regionRect.Size / 2;
             polygon2D.tileOffset += new Vector2(0, 1);  // Looks good visually.
-
-            //
-            //polygon2D.Offset = -tileData.TextureOffset - regionRect.Size / 2 - new Vector2(4, 4);  // TODO: remove
-
-            // Load the shader material and attach.
-            // TODO: remove if unused.
-            //ShaderMaterial shaderMaterial = (ShaderMaterial)ResourceLoader.Load("res://Materials/vertex_pixel_snap.tres");
-            //polygon2D.Material = shaderMaterial;
 
             // Add the sprite as a child to Shadows TileMap
             shadows.AddChild(polygon2D);
@@ -73,7 +57,7 @@ public partial class Trees : TileMap {
         lightFade = Math.Min((lightFade), 1.0f);
         lightFade = Math.Max(lightFade, .3f);
 
-        // TODO: I feel like the tile atlases are set up wrong, this shouldn't be necessary?
+        // NOTE: I feel like the tile atlasses are set up wrong, this shouldn't be necessary?
         // If the material was shared, maybe it would update, not sure.
         // Regular trees.
         TileSetAtlasSource atlasSource = (TileSetAtlasSource)this.TileSet.GetSource(1);
@@ -97,9 +81,6 @@ public partial class Trees : TileMap {
             Rect2 regionRect = polygon2D.regionRect;
 
             // This starts at 0,0, and defines the skew.
-            // Vector2 skew = new Vector2(regionRect.Size.y / 2, regionRect.Size.y + regionRect.Size.y / 2);  // TODO: remove
-            //float maxY = regionRect.Size.y + (regionRect.Size.y / 2);
-            //Vector2 skew = new Vector2(regionRect.Size.y / 2, maxY * yPercent);
             float maxX = (regionRect.Size.Y / 4);
             float maxY = (regionRect.Size.Y / 4);
             Vector2 skew = new Vector2(maxX * xPercent, maxY * yPercent);
