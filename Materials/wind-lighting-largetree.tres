@@ -8,72 +8,72 @@ code = "shader_type canvas_item;
 #include \"res://Materials/common.gdshaderinc\"
 
 void vertex() {
-	
-	// 'Wind' shader done by me.
-	world_pos = (MODEL_MATRIX * SCREEN_MATRIX * vec4(VERTEX, 1.0, 1.0)).xy;
-	vec2 world_pos_adjusted = world_pos + VERTEX;
-	float scale = 40.0;
-	float xy_offset = world_pos_adjusted.x * scale - world_pos_adjusted.y * scale;
-	float x_offset = sin(TIME * 1.0 + xy_offset);
-	x_offset *= x_offset - 1.0;  // makes -x sway less that +x sway.
-	x_offset *= (5.0 - VERTEX.y);
-	x_offset *= .02;
-	int rounded = int(x_offset * 10.0);
-	x_offset = float(rounded) / 10.0;
-	VERTEX.x += x_offset;
+    
+    // 'Wind' shader done by me.
+    world_pos = (MODEL_MATRIX * SCREEN_MATRIX * vec4(VERTEX, 1.0, 1.0)).xy;
+    vec2 world_pos_adjusted = world_pos + VERTEX;
+    float scale = 40.0;
+    float xy_offset = world_pos_adjusted.x * scale - world_pos_adjusted.y * scale;
+    float x_offset = sin(TIME * 1.0 + xy_offset);
+    x_offset *= x_offset - 1.0;  // makes -x sway less that +x sway.
+    x_offset *= (5.0 - VERTEX.y);
+    x_offset *= .02;
+    int rounded = int(x_offset * 10.0);
+    x_offset = float(rounded) / 10.0;
+    VERTEX.x += x_offset;
 
-	// Convert palette texture to vec4 for use later.
-	// Note: this should be moved to a some location where it gets computed only once.
-	palette_size = float(textureSize(palette_texture, 0).y);
-	vec3 c;
-	for (int i = 0; i < int(palette_size); i++) {
-		c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
-		color_palette[i] = vec4(c, rgb2lightness(c));
-	}
+    // Convert palette texture to vec4 for use later.
+    // Note: this should be moved to a some location where it gets computed only once.
+    palette_size = float(textureSize(palette_texture, 0).y);
+    vec3 c;
+    for (int i = 0; i < int(palette_size); i++) {
+        c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
+        color_palette[i] = vec4(c, rgb2lightness(c));
+    }
 }
 
 void fragment() {
-	
-	vec2 altUV = UV;
-	float  xy_offset = world_pos.x / 13.0 * (UV.y * 2.0 - world_pos.y) * PI / 5.0;
-	float y_offset = max(sin(TIME + xy_offset), .95);
-	y_offset -= .95;
-	if (int(xy_offset) % 2 == 0) y_offset *= -(abs(NORMAL.x)) * 1.5;
-	else y_offset *= (NORMAL.x) * 1.5;  // looked good as well.
-	y_offset *= (.06 - UV.y);  // decrease effect near bottom.
-	y_offset *= .05;
-	int rounded = int(y_offset * 40000.0);
-	y_offset = float(rounded) / 40000.0;
-	altUV.y += y_offset * 8.0;
-	
-	// Prevent jitter.
-	altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
-	vec3 modulate = COLOR.rgb / texture(TEXTURE, UV).rgb;
-	COLOR = texture(TEXTURE, altUV);
-	
-	// Calculate basic output color based on normal normal map image.
-	// This has to be done manually in Godot 2D shaders in order for this shader to work.
-	vec3 lightDir = vec3(cos(light_angle), sin(light_angle), .8);
-	vec3 normal;
-	normal.xy = texture(NORMAL_TEXTURE, altUV).xy * vec2(2.0, -2.0) - vec2(1.0, -1.0);
-	normal.z = sqrt(1.0 - dot(normal.xy, normal.xy));
-	float diff = max(dot(normal, lightDir), 0.0);
-	vec3 diffuse = diff * light_color;
-	vec3 c = (ambient_light + diffuse) * COLOR.rgb;
+    
+    vec2 altUV = UV;
+    float  xy_offset = world_pos.x / 13.0 * (UV.y * 2.0 - world_pos.y) * PI / 5.0;
+    float y_offset = max(sin(TIME + xy_offset), .95);
+    y_offset -= .95;
+    if (int(xy_offset) % 2 == 0) y_offset *= -(abs(NORMAL.x)) * 1.5;
+    else y_offset *= (NORMAL.x) * 1.5;  // looked good as well.
+    y_offset *= (.06 - UV.y);  // decrease effect near bottom.
+    y_offset *= .05;
+    int rounded = int(y_offset * 40000.0);
+    y_offset = float(rounded) / 40000.0;
+    altUV.y += y_offset * 8.0;
+    
+    // Prevent jitter.
+    altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
+    vec3 modulate = COLOR.rgb / texture(TEXTURE, UV).rgb;
+    COLOR = texture(TEXTURE, altUV);
+    
+    // Calculate basic output color based on normal normal map image.
+    // This has to be done manually in Godot 2D shaders in order for this shader to work.
+    vec3 lightDir = vec3(cos(light_angle), sin(light_angle), .8);
+    vec3 normal;
+    normal.xy = texture(NORMAL_TEXTURE, altUV).xy * vec2(2.0, -2.0) - vec2(1.0, -1.0);
+    normal.z = sqrt(1.0 - dot(normal.xy, normal.xy));
+    float diff = max(dot(normal, lightDir), 0.0);
+    vec3 diffuse = diff * light_color;
+    vec3 c = (ambient_light + diffuse) * COLOR.rgb;
 
     int index_of_closest;
     float distance_to_closest = 10000.0;
-	
-	// Uses the brown palette for the bottom-half of the tree.
-	// TODO: find a better way to split the palettes.
-	int startIndex = 0;
-	int endIndex = int(palette_size);
-	if (endIndex > 4) {
-		if (UV.y > .0645) {
-			startIndex = 4;
-		}
-		else endIndex = 4;
-	}
+    
+    // Uses the brown palette for the bottom-half of the tree.
+    // TODO: find a better way to split the palettes.
+    int startIndex = 0;
+    int endIndex = int(palette_size);
+    if (endIndex > 4) {
+        if (UV.y > .0645) {
+            startIndex = 4;
+        }
+        else endIndex = 4;
+    }
 
     for (int i = startIndex; i < endIndex; ++i) {
         float d = find_weighted_distance(color_palette[i], c);
@@ -83,8 +83,8 @@ void fragment() {
         }
     }
 
-	// Assign to the nearest color.
-	COLOR.rgb = color_palette[index_of_closest].rgb * modulate;
+    // Assign to the nearest color.
+    COLOR.rgb = color_palette[index_of_closest].rgb * modulate;
 }
 "
 

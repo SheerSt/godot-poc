@@ -11,50 +11,50 @@ shader_type canvas_item;
 #include \"res://Materials/common.gdshaderinc\"
 
 void vertex() {
-	
-	// 'Wind' shader done by me.
-	world_pos = (MODEL_MATRIX * SCREEN_MATRIX * vec4(VERTEX, 1.0, 1.0)).xy;
-	vec2 world_pos_adjusted = world_pos + VERTEX;  // Prevents the 'bulge' effect, world_pos will be left side of tree.
-	float scale = 40.0;
-	float xy_offset = world_pos_adjusted.x * scale - world_pos_adjusted.y * scale;  // sway trees from bottom-left to top-right.
-	float x_offset = sin(TIME * 1.4 + xy_offset);
-	x_offset *= x_offset - 1.0;  // makes -x sway less that +x sway.
-	x_offset *= (4.0 - VERTEX.y);
-	x_offset *= .08;
-	int rounded = int(x_offset * 10.0);
-	x_offset = float(rounded) / 10.0;
-	VERTEX.x += x_offset;
+    
+    // 'Wind' shader done by me.
+    world_pos = (MODEL_MATRIX * SCREEN_MATRIX * vec4(VERTEX, 1.0, 1.0)).xy;
+    vec2 world_pos_adjusted = world_pos + VERTEX;  // Prevents the 'bulge' effect, world_pos will be left side of tree.
+    float scale = 40.0;
+    float xy_offset = world_pos_adjusted.x * scale - world_pos_adjusted.y * scale;  // sway trees from bottom-left to top-right.
+    float x_offset = sin(TIME * 1.4 + xy_offset);
+    x_offset *= x_offset - 1.0;  // makes -x sway less that +x sway.
+    x_offset *= (4.0 - VERTEX.y);
+    x_offset *= .08;
+    int rounded = int(x_offset * 10.0);
+    x_offset = float(rounded) / 10.0;
+    VERTEX.x += x_offset;
 
-	// Convert palette texture to vec4 for use later.
-	// Note: this should be moved to a some location where it gets computed only once.
-	palette_size = float(textureSize(palette_texture, 0).y);
-	vec3 c;
-	for (int i = 0; i < int(palette_size); i++) {
-		c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
-		color_palette[i] = vec4(c, rgb2lightness(c));
-	}
+    // Convert palette texture to vec4 for use later.
+    // Note: this should be moved to a some location where it gets computed only once.
+    palette_size = float(textureSize(palette_texture, 0).y);
+    vec3 c;
+    for (int i = 0; i < int(palette_size); i++) {
+        c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
+        color_palette[i] = vec4(c, rgb2lightness(c));
+    }
 }
 
 void fragment() {
-	
-	vec2 altUV = UV;
-	float  xy_offset = world_pos.x / 13.0 * (UV.y * 2.0 - world_pos.y) * PI / 5.0;
-	float y_offset = max(sin(TIME + xy_offset), .95);
-	y_offset -= .95;
-	y_offset *= -(abs(NORMAL.x));
-	y_offset *= (.06 - UV.y);  // decrease effect near bottom.
-	y_offset *= .05;
-	int rounded = int(y_offset * 40000.0);
-	y_offset = float(rounded) / 40000.0;
-	altUV.y += y_offset * 8.0;
-	
-	// Prevent jitter.
-	altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
-	vec3 modulate = COLOR.rgb / texture(TEXTURE, UV).rgb;
-	COLOR = texture(TEXTURE, altUV);
-	
-	vec3 c = COLOR.rgb;
-	COLOR.rgb = c * modulate;
+    
+    vec2 altUV = UV;
+    float  xy_offset = world_pos.x / 13.0 * (UV.y * 2.0 - world_pos.y) * PI / 5.0;
+    float y_offset = max(sin(TIME + xy_offset), .95);
+    y_offset -= .95;
+    y_offset *= -(abs(NORMAL.x));
+    y_offset *= (.06 - UV.y);  // decrease effect near bottom.
+    y_offset *= .05;
+    int rounded = int(y_offset * 40000.0);
+    y_offset = float(rounded) / 40000.0;
+    altUV.y += y_offset * 8.0;
+    
+    // Prevent jitter.
+    altUV = computeUV(altUV, TEXTURE_PIXEL_SIZE);
+    vec3 modulate = COLOR.rgb / texture(TEXTURE, UV).rgb;
+    COLOR = texture(TEXTURE, altUV);
+    
+    vec3 c = COLOR.rgb;
+    COLOR.rgb = c * modulate;
 }
 "
 

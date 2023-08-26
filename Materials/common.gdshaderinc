@@ -80,20 +80,20 @@ varying vec2 world_pos;
 
 vec4 texturePointSmooth(sampler2D smp, vec2 uv, vec2 pixel_size)
 {
-	vec2 ddx = dFdx(uv);
-	vec2 ddy = dFdy(uv);
-	vec2 lxy = sqrt(ddx * ddx + ddy * ddy);
-	
-	vec2 uv_pixels = uv / pixel_size;
-	
-	vec2 uv_pixels_floor = round(uv_pixels) - vec2(0.5f);
-	vec2 uv_dxy_pixels = uv_pixels - uv_pixels_floor;
-	
-	uv_dxy_pixels = clamp((uv_dxy_pixels - vec2(0.5f)) * pixel_size / lxy + vec2(0.5f), 0.0f, 1.0f);
-	
-	uv = uv_pixels_floor * pixel_size;
-	
-	return textureGrad(smp, uv + uv_dxy_pixels * pixel_size, ddx, ddy);
+    vec2 ddx = dFdx(uv);
+    vec2 ddy = dFdy(uv);
+    vec2 lxy = sqrt(ddx * ddx + ddy * ddy);
+    
+    vec2 uv_pixels = uv / pixel_size;
+    
+    vec2 uv_pixels_floor = round(uv_pixels) - vec2(0.5f);
+    vec2 uv_dxy_pixels = uv_pixels - uv_pixels_floor;
+    
+    uv_dxy_pixels = clamp((uv_dxy_pixels - vec2(0.5f)) * pixel_size / lxy + vec2(0.5f), 0.0f, 1.0f);
+    
+    uv = uv_pixels_floor * pixel_size;
+    
+    return textureGrad(smp, uv + uv_dxy_pixels * pixel_size, ddx, ddy);
 }
 
 // https://godotshaders.com/shader/sub-pixel-accurate-pixel-sprite-filtering/
@@ -101,17 +101,17 @@ uniform float smoothing_factor : hint_range(0.1, 1.0) = 1.0;
 
 vec2 computeUV(vec2 uv, vec2 pixel_size)
 {
-	// Compute the new uv
-	vec2 uv_width = fwidth(uv);
-	vec2 sprite_screen_resolution = smoothing_factor / uv_width;
+    // Compute the new uv
+    vec2 uv_width = fwidth(uv);
+    vec2 sprite_screen_resolution = smoothing_factor / uv_width;
 
-	vec2 uv_pixel_src = floor(uv / pixel_size + 0.499);
+    vec2 uv_pixel_src = floor(uv / pixel_size + 0.499);
 
-	vec2 edge = uv_pixel_src;
-	edge = edge * pixel_size * sprite_screen_resolution;
+    vec2 edge = uv_pixel_src;
+    edge = edge * pixel_size * sprite_screen_resolution;
 
-	vec2 uv_pixel = uv * sprite_screen_resolution;
-	vec2 uv_factor = clamp(uv_pixel - edge + 0.5, 0.0, 1.0);
-	
-	return (mix(uv_pixel_src - 1.0, uv_pixel_src, uv_factor) + 0.5) * pixel_size;;
+    vec2 uv_pixel = uv * sprite_screen_resolution;
+    vec2 uv_factor = clamp(uv_pixel - edge + 0.5, 0.0, 1.0);
+    
+    return (mix(uv_pixel_src - 1.0, uv_pixel_src, uv_factor) + 0.5) * pixel_size;;
 }
