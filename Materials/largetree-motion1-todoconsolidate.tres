@@ -3,8 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://dgsua5ci76r8r" path="res://Tiles/tree2.palette.png" id="1_svqhe"]
 
 [sub_resource type="Shader" id="Shader_uqgc5"]
-code = "#include "Materials/common.gdshaderinc"
+code = "shader_type canvas_item;
 
+#include \"res://Materials/common.gdshaderinc\"
 
 void vertex() {
 	
@@ -20,7 +21,15 @@ void vertex() {
 	int rounded = int(x_offset * 10.0);
 	x_offset = float(rounded) / 10.0;
 	VERTEX.x += x_offset;
-	
+
+	// Convert palette texture to vec4 for use later.
+	// Note: this should be moved to a some location where it gets computed only once.
+	palette_size = float(textureSize(palette_texture, 0).y);
+	vec3 c;
+	for (int i = 0; i < int(palette_size); i++) {
+		c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
+		color_palette[i] = vec4(c, rgb2lightness(c));
+	}
 }
 
 void fragment() {

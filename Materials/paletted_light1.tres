@@ -13,7 +13,9 @@ code = "// credit to u/MartialArtTetherball
 // Good references:
 // https://github.com/ruffiely/windshader_godot/blob/master/Vegetation_Shader.shader
 
-#include "Materials/common.gdshaderinc"
+shader_type canvas_item;
+
+#include \"res://Materials/common.gdshaderinc\"
 
 void vertex() {
 	
@@ -30,6 +32,15 @@ void vertex() {
 	int rounded = int(x_offset * 10.0);
 	x_offset = float(rounded) / 10.0;
 	VERTEX.x += x_offset;
+
+	// Convert palette texture to vec4 for use later.
+	// Note: this should be moved to a some location where it gets computed only once.
+	palette_size = float(textureSize(palette_texture, 0).y);
+	vec3 c;
+	for (int i = 0; i < int(palette_size); i++) {
+		c = texelFetch(palette_texture, ivec2(0, i), 0).rgb;
+		color_palette[i] = vec4(c, rgb2lightness(c));
+	}
 }
 
 void fragment() {
